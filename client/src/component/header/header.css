@@ -1,0 +1,67 @@
+/* Header.css */
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: skyblue;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.left-section,
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  margin-right: 15px;
+  cursor: pointer;
+  color: #333; /* Adjust link color */
+  font-size: 16px; /* Adjust font size */
+  text-decoration: none;
+  transition: color 0.3s ease; /* Smooth color transition on hover */
+
+  &:hover {
+    color: #007BFF; /* Change link color on hover */
+  }
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 40px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  margin-right: 10px;
+}
+
+.brand-name {
+  font-size: 20px; /* Increase font size for brand name */
+  font-weight: bold;
+  color: #fff; /* Adjust the color as needed */
+}
+
+/* Styling for the right section (login and register) */
+.right-section {
+  font-size: 16px;
+}
+
+/* Add spacing between login and register links */
+.right-section .nav-link {
+  margin-right: 20px;
+}
+
+/* Adjust the color and size of login and register links */
+.right-section .nav-link {
+  color: #fff;
+  font-size: 16px;
+}
+
+/* Hover effect for login and register links */
+.right-section .nav-link:hover {
+  color: #007BFF;
+}
