@@ -4,8 +4,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: skyblue;
+  padding: 18px 28px;
+  background-color: #0046c9;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
@@ -18,15 +18,17 @@
 .nav-link {
   margin-right: 15px;
   cursor: pointer;
-  color: #333; /* Adjust link color */
-  font-size: 16px; /* Adjust font size */
+  color: white; /* Adjust link color */
+  font-size: 18px; /* Adjust font size */
   text-decoration: none;
-  transition: color 0.3s ease; /* Smooth color transition on hover */
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transitions on hover */
 
   &:hover {
-    color: #007BFF; /* Change link color on hover */
+    color: #fff;
+    text-decoration: underline; /* Add underline on hover */
   }
 }
+
 
 .logo-container {
   display: flex;
@@ -40,7 +42,7 @@
 }
 
 .brand-name {
-  font-size: 20px; /* Increase font size for brand name */
+  font-size: 30px; /* Increase font size for brand name */
   font-weight: bold;
   color: #fff; /* Adjust the color as needed */
 }
@@ -58,10 +60,10 @@
 /* Adjust the color and size of login and register links */
 .right-section .nav-link {
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 /* Hover effect for login and register links */
 .right-section .nav-link:hover {
-  color: #007BFF;
+  text-decoration: underline;
 }
