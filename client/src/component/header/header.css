@@ -7,6 +7,9 @@
   padding: 16px 28px;
   background-color: #0046c9;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  position: sticky;
+  top: 0;
+  z-index: 100; 
 }
 
 .left-section,

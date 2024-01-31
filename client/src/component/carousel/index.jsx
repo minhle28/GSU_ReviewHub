@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import './carousel.css';
+
 
 export const Carousel = () => {
     const carouselRef = useRef(null);

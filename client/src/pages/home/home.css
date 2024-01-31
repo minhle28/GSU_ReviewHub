@@ -1,9 +1,27 @@
+#main_home_page .card {
+    margin: 100px;
+} 
+
+.card button {
+    margin: 20px 100px 50px;
+    width: 200px;
+    height: 50px;
+}
+
+ #main_home_page .card-title {
+    font-size: 35px;
+ }
+
+ #main_home_page .card-text {
+    font-size: 20px;
+ }
+
 .HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 {
     display: grid;
     grid-template-columns: 1fr;
     /* Single column layout */
     text-align: center;
-    padding: 200px 0 180px 0;
+    padding: 100px 0 180px 0;
 }
 
 .HomepageCTA__CTAHeader-sc-1cz1lmf-1 {
@@ -39,7 +57,7 @@
 
 button.ModalButtonLink__StyledButton-sc-1soj3zs-0 {
     display: block;
-    margin: 20px auto;
+    margin: 50px auto;
     border: none;
     /* Center the button */
 }
@@ -52,7 +70,7 @@ button.ModalButtonLink__StyledButton-sc-1soj3zs-0 {
 
 .HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button {
     position: relative;
-    padding: 8px 16px;
+    padding: 14px 22px;
     display: block;
     overflow: hidden;
 }
