@@ -1,41 +1,108 @@
-.gDekFH {
-    margin: 0px auto;
-    max-width: 1280px;
-    width: 100%;
-}
-
-.kaBGnN {
-    background-color: white;
-    position: relative;
-    text-align: center;
-}
-
 .HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 {
     display: grid;
-    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-columns: 1fr;
+    /* Single column layout */
     text-align: center;
-  }
-  
-  .HomepageCTA__CTAHeader-sc-1cz1lmf-1 {
-    margin-bottom: 20px; /* Adjust the spacing between header and subheader */
-  }
-  
-  .CTAImagePrompts__CardContainer-sc-185aslp-0 {
+    padding: 200px 0 180px 0;
+}
+
+.HomepageCTA__CTAHeader-sc-1cz1lmf-1 {
+    margin-bottom: 60px;
+    /* Adjust the spacing between header and subheader */
+}
+
+.HomepageCTA__CTAMainHeader-sc-1cz1lmf-2 {
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.HomepageCTA__CTASubheader-sc-1cz1lmf-3 {
+    font-size: 20px;
+}
+
+.CTAImagePrompts__CardContainer-sc-185aslp-0 {
     display: flex;
     justify-content: center;
-  }
-  
-  .CTACard__StyledCTACard-sc-1l1zcl0-0 {
+}
+
+.CTACard__StyledCTACard-sc-1l1zcl0-0 {
     text-align: center;
-    margin: 0 15px; /* Adjust the spacing between cards */
-  }
-  
-  .CTACard__CardText-sc-1l1zcl0-2 {
+    margin: 0 30px;
+    /* Adjust the spacing between cards */
+}
+
+.CTACard__CardText-sc-1l1zcl0-2 {
+    margin: 20px 40px 0 40px;
     font-weight: bold;
-  }
-  
-  button.ModalButtonLink__StyledButton-sc-1soj3zs-0 {
+    font-size: 20px;
+}
+
+button.ModalButtonLink__StyledButton-sc-1soj3zs-0 {
     display: block;
-    margin: 20px auto; /* Center the button */
-  }
-  
+    margin: 20px auto;
+    border: none;
+    /* Center the button */
+}
+
+.CTAImagePrompts__CardContainer-sc-185aslp-0 img {
+    width: 340px;
+    height: 340px;
+    border-radius: 20px;
+}
+
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button {
+    position: relative;
+    padding: 8px 16px;
+    display: block;
+    overflow: hidden;
+}
+
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button span {
+    position: relative;
+    color: #fff;
+    z-index: 1;
+}
+
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button>div {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: #2b319b;
+    transition: 0.5s;
+}
+
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button>div::after,
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button>div::before {
+    content: '';
+    width: 200%;
+    height: 200%;
+    position: absolute;
+}
+
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button>div::before {
+    border-radius: 45%;
+    background: rgba(20, 20, 20, 1);
+    animation: animate 5s linear infinite;
+}
+
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button>div::after {
+    border-radius: 40%;
+    background: rgba(80, 80, 80, 0.5);
+    animation: animate 10s linear infinite;
+}
+
+.HomepageCTA__StyledHomepageCTA-sc-1cz1lmf-0 button:hover>div {
+    top: -150px;
+}
+
+@keyframes animate {
+    0% {
+        transform: translate(-50%, -75%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -75%) rotate(360deg);
+    }
+}

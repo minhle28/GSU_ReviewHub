@@ -1,18 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export const Carousel = () => {
+    const carouselRef = useRef(null);
+
     useEffect(() => {
         // Initialize the Bootstrap Carousel when the component mounts
-        const carousel = new window.bootstrap.Carousel(document.getElementById('carouselExampleCaptions'));
+        const carouselInstance = new window.bootstrap.Carousel(carouselRef.current);
 
-        // Cleanup the Carousel when the component unmounts
+        // Set up auto slide every 10 seconds
+        const intervalId = setInterval(() => {
+            carouselInstance.next();
+        }, 10000);
+
+        // Cleanup the Carousel and clearInterval when the component unmounts
         return () => {
-            carousel.dispose();
+            carouselInstance.dispose();
+            clearInterval(intervalId);
         };
     }, []);
 
     return (
-        <div id="carouselExampleCaptions" className="carousel slide" >
+        <div id="carouselExampleCaptions" className="carousel slide" ref={carouselRef} >
             <div className="carousel-indicators" >
                 <button
                     type="button"
@@ -44,14 +52,14 @@ export const Carousel = () => {
                     </div>
                 </div>
                 <div className="carousel-item">
-                    <img src="banner_2.jpeg" className="d-block w-100" style={{ height: '400px', width: 'auto' }} alt="..." />
+                    <img src="banner_2.png" className="d-block w-100" style={{ height: '400px', width: 'auto' }} alt="..." />
                     <div className="carousel-caption d-none d-md-block">
                         <h5>Second slide label</h5>
                         <p>Some representative placeholder content for the second slide.</p>
                     </div>
                 </div>
                 <div className="carousel-item">
-                    <img src="banner_3.jpeg" className="d-block w-100" style={{ height: '400px', width: 'auto' }} alt="..." />
+                    <img src="banner_3.png" className="d-block w-100" style={{ height: '400px', width: 'auto' }} alt="..." />
                     <div className="carousel-caption d-none d-md-block">
                         <h5>Third slide label</h5>
                         <p>Some representative placeholder content for the third slide.</p>
