@@ -3,7 +3,7 @@ import './footer.css';
 
 export const Footer = () => {
     return (
-        <footer className=" footer-container d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
+        <footer id='footer_custom' className=" footer-container d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
             <p className="col-md-4 mb-0 text-muted">© 2024 GSU ReviewHub</p>
             <a
                 href="/"
