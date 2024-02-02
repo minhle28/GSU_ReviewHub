@@ -8,25 +8,29 @@
 }
 
 #first_card .btn-primary {
-    background-color: #007bff; /* Button color */
+    background: linear-gradient(to right, #566cae, #0046c9); /* Gradient background */
     color: #fff; /* Text color */
-    /* Add more styling properties as needed */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Adjust padding */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add box shadow */
+    cursor: pointer; /* Change cursor on hover */
+    transition: background 0.3s ease, box-shadow 0.3s ease; /* Add transition effect */
 }
 
 #first_card .btn-primary:hover {
-    background-color: #0056b3; /* Change button color on hover */
-    /* Add more styling properties for hover state */
+    background: linear-gradient(to right, #0046c9, #566cae); /* Change gradient on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Change box shadow on hover */
 }
 
 #first_card .float-end {
-    float: right; /* Align button to the right */
-    margin-top: 10px; /* Add spacing from the top */
+    float: right;
+    margin-top: 10px;
 }
 
 #first_card .forward-icon {
-    width: 20px; /* Adjust the width of the forward icon */
-    margin-left: 5px; /* Add spacing between the button and the icon */
-    /* Add more styling properties for the forward icon as needed */
+    width: 20px;
+    margin-left: 5px;
 }
 
 #main_home_page .card-title {

@@ -1,23 +1,39 @@
 import React from "react";
-//import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 //COMPONENTS
-import { Header } from "./component/header/";
-import { Footer } from "./component/footer/";
-import { Carousel } from "./component/carousel/";
+
+
+//LAYOUTS
+import { MainLayout } from "./layouts/mainLayout";
+import { CommonLayout } from "./layouts/CommonLayout";
+
 
 //PAGES
 import { Home } from "./pages/home/";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "",
+        element: <CommonLayout />,
+        children: [
+          {
+            index: true,
+            path: "",
+            element: <Home />,
+          },
+        ],
+      },
+    ]
+  },
+]);
+
 function App() {
-  return (
-    <div className="App">
-      <Header/>
-      <Carousel/>
-      <Home/>
-      <Footer/>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
