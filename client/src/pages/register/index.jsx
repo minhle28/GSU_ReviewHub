@@ -10,12 +10,6 @@ export const Register = () => {
                         <h2 className="form-title">Sign up</h2>
                         <form method="POST" className="register-form" id="register-form">
                             <div className="form-group">
-                                <label htmlFor="name">
-                                    <i className="zmdi zmdi-account material-icons-name" />
-                                </label>
-                                <input type="text" name="name" id="name" placeholder="Your Name" />
-                            </div>
-                            <div className="form-group">
                                 <label htmlFor="email">
                                     <i className="zmdi zmdi-email" />
                                 </label>
@@ -35,17 +29,6 @@ export const Register = () => {
                                     name="pass"
                                     id="pass"
                                     placeholder="Password"
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="re-pass">
-                                    <i className="zmdi zmdi-lock-outline" />
-                                </label>
-                                <input
-                                    type="password"
-                                    name="re_pass"
-                                    id="re_pass"
-                                    placeholder="Repeat your password"
                                 />
                             </div>
                             <div className="form-group">

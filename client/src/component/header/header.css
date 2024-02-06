@@ -62,7 +62,7 @@
 }
 
 /* Adjust the color and size of login and register links */
-.right-section .nav-link {
+.right-section .nav-link link {
   color: #fff;
   font-size: 18px;
 }
