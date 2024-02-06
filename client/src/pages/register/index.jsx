@@ -1,7 +1,7 @@
 import React from 'react'
-import './login.css';
+import './register.css';
 
-export const Login = () => {
+export const Register = () => {
     return (
         <section className="signup">
             <div className="container">

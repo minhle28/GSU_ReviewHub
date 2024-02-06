@@ -11,6 +11,8 @@ import { CommonLayout } from "./layouts/CommonLayout";
 
 //PAGES
 import { Home } from "./pages/home/";
+import { Register } from "./pages/register";
+import { Login } from "./pages/login";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
             index: true,
             path: "",
             element: <Home />,
+          },
+          {
+            path: "register",
+            element: <Register />,
+          },
+          {
+            path: "login",
+            element: <Login />,
           },
         ],
       },
