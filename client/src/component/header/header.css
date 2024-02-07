@@ -12,14 +12,13 @@
   z-index: 100; 
 }
 
-.left-section,
-.right-section {
+.header-container .left-section,
+.header-container .right-section {
   display: flex;
   align-items: center;
 }
 
-.nav-link {
-  margin-right: 15px;
+.header-container .nav-link {
   cursor: pointer;
   color: white; /* Adjust link color */
   font-size: 18px; /* Adjust font size */
@@ -33,41 +32,52 @@
 }
 
 
-.logo-container {
+.header-container .logo-container {
   display: flex;
   align-items: center;
 }
 
-.logo {
+.header-container .logo {
   width: 50px; /* Adjust the width as needed */
   height: 50px; /* Adjust the height as needed */
   margin-right: 10px;
   border-radius: 50px;
 }
 
-.brand-name {
+.header-container .brand-name {
   font-size: 30px; /* Increase font size for brand name */
   font-weight: bold;
   color: #fff; /* Adjust the color as needed */
 }
 
 /* Styling for the right section (login and register) */
-.right-section {
+.header-container .right-section {
   font-size: 16px;
 }
 
 /* Add spacing between login and register links */
-.right-section .nav-link {
+.header-container .right-section .nav-link {
   margin-right: 20px;
 }
 
 /* Adjust the color and size of login and register links */
-.right-section .nav-link link {
+.header-container .right-section .nav-link a {
   color: #fff;
   font-size: 18px;
+  text-decoration: none; /* Remove underline by default */
 }
 
 /* Hover effect for login and register links */
-.right-section .nav-link:hover {
+.header-container .right-section .nav-link:hover {
   text-decoration: underline;
+}
+
+.header-container .left-section .nav-link {
+  margin-left: 20px;
+}
+
+.header-container .left-section .nav-link a {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none; 
 }

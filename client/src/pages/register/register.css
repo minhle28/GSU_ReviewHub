@@ -103,7 +103,7 @@ h2 {
     clear: both
 }
 
-.container {
+.signup .container {
     width: 900px;
     background: #fff;
     margin: 0 auto;
@@ -477,14 +477,14 @@ label.valid:after {
 }
 
 @media screen and (max-width: 1200px) {
-    .container {
+    .signup .container {
         width: calc(100% - 30px);
         max-width: 100%
     }
 }
 
 @media screen and (min-width: 1024px) {
-    .container {
+    .signup .container {
         max-width: 1200px
     }
 }

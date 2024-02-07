@@ -1,5 +1,7 @@
 import React from 'react'
 import './register.css';
+import { Link } from 'react-router-dom';
+
 
 export const Register = () => {
     return (
@@ -63,9 +65,11 @@ export const Register = () => {
                         <figure>
                             <img src="images/signup-image.jpg" alt="sing up image" />
                         </figure>
-                        <a href="#" className="signup-image-link">
-                            I am already member
-                        </a>
+                        <Link to="/login">
+                            <a href="#" className="signup-image-link">
+                                I am already member
+                            </a>
+                        </Link>
                     </div>
                 </div>
             </div>

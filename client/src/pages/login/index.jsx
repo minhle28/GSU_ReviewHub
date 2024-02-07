@@ -1,5 +1,6 @@
 import React from 'react'
 import './login.css';
+import { Link } from 'react-router-dom';
 
 export const Login = () => {
     return (
@@ -10,9 +11,11 @@ export const Login = () => {
                         <figure>
                             <img src="images/signin-image.jpg" alt="sing up image" />
                         </figure>
-                        <a href="#" className="signup-image-link">
-                            Create an account
-                        </a>
+                        <Link to="/register">
+                            <a className="signup-image-link">
+                                Create an account
+                            </a>
+                        </Link>
                     </div>
                     <div className="signin-form">
                         <h2 className="form-title">Login</h2>
