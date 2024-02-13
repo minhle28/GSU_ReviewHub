@@ -28,7 +28,7 @@ export const Login = () => {
                                     type="text"
                                     name="your_name"
                                     id="your_name"
-                                    placeholder="Your Name"
+                                    placeholder="Email"
                                 />
                             </div>
                             <div className="form-group">

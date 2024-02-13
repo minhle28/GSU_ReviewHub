@@ -19,7 +19,7 @@ export const Register = () => {
                                     type="email"
                                     name="email"
                                     id="email"
-                                    placeholder="Your Email"
+                                    placeholder="Email"
                                 />
                             </div>
                             <div className="form-group">
