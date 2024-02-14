@@ -9,7 +9,7 @@ export const Login = () => {
                 <div className="signin-content">
                     <div className="signin-image">
                         <figure>
-                            <img src="images/signin-image.jpg" alt="sing up image" />
+                            <img src="signin-image.png" alt="sing up image" />
                         </figure>
                         <Link to="/register">
                             <a className="signup-image-link">

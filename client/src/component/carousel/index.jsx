@@ -47,21 +47,21 @@ export const Carousel = () => {
             </div>
             <div className="carousel-inner">
                 <div className="carousel-item active">
-                    <img src="banner_1.png" className="d-block w-100" style={{ height: '400px', width: 'auto' }} alt="..." />
+                    <img src="banner_1.png" className="d-block w-100" style={{ height: '500px', width: 'auto' }} alt="..." />
                     <div className="carousel-caption d-none d-md-block">
                         <h5>First slide label</h5>
                         <p>Some representative placeholder content for the first slide.</p>
                     </div>
                 </div>
                 <div className="carousel-item">
-                    <img src="banner_2.png" className="d-block w-100" style={{ height: '400px', width: 'auto' }} alt="..." />
+                    <img src="banner_2.png" className="d-block w-100" style={{ height: '500px', width: 'auto' }} alt="..." />
                     <div className="carousel-caption d-none d-md-block">
                         <h5>Second slide label</h5>
                         <p>Some representative placeholder content for the second slide.</p>
                     </div>
                 </div>
                 <div className="carousel-item">
-                    <img src="banner_3.png" className="d-block w-100" style={{ height: '400px', width: 'auto' }} alt="..." />
+                    <img src="banner_3.png" className="d-block w-100" style={{ height: '500px', width: 'auto' }} alt="..." />
                     <div className="carousel-caption d-none d-md-block">
                         <h5>Third slide label</h5>
                         <p>Some representative placeholder content for the third slide.</p>

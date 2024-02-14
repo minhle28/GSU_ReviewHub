@@ -6,3 +6,7 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     margin-top: 120px;
   }
+
+#footer_custom {
+  background-color: rgba(223, 223, 223, 0.3);
+}

@@ -107,11 +107,11 @@ h2 {
     width: 900px;
     background: #fff;
     margin: 0 auto;
-    box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .05);
-    -moz-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .05);
-    -webkit-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .05);
-    -o-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .05);
-    -ms-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .05);
+    box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .1);
+    -o-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .1);
+    -ms-box-shadow: 0 15px 16.83px .17px rgba(0, 0, 0, .1);
     border-radius: 20px;
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;

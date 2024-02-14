@@ -9,7 +9,7 @@ export const Register = () => {
             <div className="container">
                 <div className="signup-content">
                     <div className="signup-form">
-                        <h2 className="form-title">Sign up</h2>
+                        <h2 className="form-title">Register</h2>
                         <form method="POST" className="register-form" id="register-form">
                             <div className="form-group">
                                 <label htmlFor="email">
@@ -63,7 +63,7 @@ export const Register = () => {
                     </div>
                     <div className="signup-image">
                         <figure>
-                            <img src="images/signup-image.jpg" alt="sing up image" />
+                            <img src="signup-image.png" alt="sing up image" />
                         </figure>
                         <Link to="/login">
                             <a href="#" className="signup-image-link">
