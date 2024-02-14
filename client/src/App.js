@@ -13,6 +13,7 @@ import { CommonLayout } from "./layouts/CommonLayout";
 import { Home } from "./pages/home/";
 import { Register } from "./pages/register";
 import { Login } from "./pages/login";
+import { AboutUs } from "./pages/about-us";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
           {
             path: "login",
             element: <Login />,
+          },
+          {
+            path: "about-us",
+            element: <AboutUs />,
           },
         ],
       },

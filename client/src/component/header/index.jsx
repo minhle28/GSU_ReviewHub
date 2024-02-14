@@ -10,7 +10,9 @@ export function Header() {
         <div className="nav-link">
           <Link to="/">Home</Link>
         </div>
-        <div className="nav-link">About</div>
+        <div className="nav-link">
+          <Link to="/about-us">About</Link>
+        </div>
       </div>
       <div className="logo-container">
         <img src="logo.png" alt="Logo" className="logo" />

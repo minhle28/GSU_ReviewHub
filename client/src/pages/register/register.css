@@ -157,8 +157,8 @@ h2 {
 }
 
 .signup {
-    margin-bottom: 50px;
-    margin-top: 80px;
+    margin-bottom: 200px;
+    margin-top: 100px;
 }
 
 .signup-content {
@@ -206,11 +206,6 @@ figure {
 
 .form-submit:hover {
     background: #4292dc
-}
-
-.sign-in {
-    margin-bottom: 50px;
-    margin-top: 50px;
 }
 
 .signup-image-link {

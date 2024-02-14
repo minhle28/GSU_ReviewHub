@@ -78,16 +78,18 @@ export const Home = () => {
                             </div>
                         </div>
                     </div>
-                    <button
-                        role="button"
-                        data-testid="modal-button-link"
-                        className="ModalButtonLink__StyledButton-sc-1soj3zs-0 khahiz"
-                        type="button"
-                    >
-                        <span>Sign up now!</span>
-                        <div />
+                    <a href='/register'>
+                        <button
+                            role="button"
+                            data-testid="modal-button-link"
+                            className="ModalButtonLink__StyledButton-sc-1soj3zs-0 khahiz"
+                            type="button"
+                        >
+                            <span>Sign up now!</span>
+                            <div />
 
-                    </button>
+                        </button>
+                    </a>
                 </div>
 
 
