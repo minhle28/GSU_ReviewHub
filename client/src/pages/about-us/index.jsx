@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export const AboutUs = () => {
     return (
         <div id="about-us">
-            <img className="image" src="banner_1.png" alt="Bad Habbit"></img>
+            <img className="image" src="about_us_banner.jpg" alt="GSU ReviewHub"></img>
             <div className="about">
                 <h1>About Us</h1>
                 <hr />
@@ -48,7 +48,7 @@ export const AboutUs = () => {
                     </div>
                 </div>
                 <div className="customer-attraction">
-                    <h2>Customer Attraction</h2>
+                    <h2>Viewer Attraction</h2>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </p>
