@@ -26,6 +26,12 @@
 #first_card .float-end {
     float: right;
     margin-top: 10px;
+    margin-right: 80px;
+}
+
+#first_card img {
+    width: 80%;
+    height: auto;
 }
 
 #first_card .forward-icon {

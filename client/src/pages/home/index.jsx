@@ -1,6 +1,7 @@
 import React from 'react'
 import './home.css';
 import { Carousel } from "../../component/carousel/";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
 
@@ -27,10 +28,12 @@ export const Home = () => {
                                 </p>
                             </div>
                             <div className="card-body">
-                                <button type="button" className="btn btn-primary float-end">
-                                    Explore The Course
-                                    <img src="forward_icon.png" className="forward-icon" alt="Forward Icon" />
-                                </button>
+                                <Link to="/courses">
+                                    <div className="btn btn-primary float-end">
+                                        Explore The Course
+                                        <img src="forward_icon.png" className="forward-icon" alt="Forward Icon" />
+                                    </div>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -407,7 +410,10 @@ export const Home = () => {
                         </div>
                     </div>
                 </section>
-
+                <br />
+                <br />
+                <br />
+                <br />
             </div>
         </>
     )

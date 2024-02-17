@@ -74,7 +74,7 @@ input[type=radio] {
     -ms-appearance: radio !important
 }
 
-img {
+#login img {
     max-width: 100%;
     height: auto
 }
@@ -188,7 +188,7 @@ figure {
 }
 
 .form-submit:hover {
-    background: #4292dc
+    background: #2f81ce
 }
 
 .signin {

@@ -74,7 +74,7 @@ input[type=radio] {
     -ms-appearance: radio !important
 }
 
-img {
+#register img {
     max-width: 100%;
     height: auto
 }
@@ -180,7 +180,7 @@ h2 {
 }
 
 .signup-image {
-    margin-top: 45px
+    margin-top: 37px
 }
 
 figure {
@@ -205,7 +205,7 @@ figure {
 }
 
 .form-submit:hover {
-    background: #4292dc
+    background: #2f81ce
 }
 
 .signup-image-link {

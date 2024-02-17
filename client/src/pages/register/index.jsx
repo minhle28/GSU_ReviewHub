@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export const Register = () => {
     return (
-        <section className="signup">
+        <section id="register" className="signup">
             <div className="container">
                 <div className="signup-content">
                     <div className="signup-form">
@@ -16,6 +16,7 @@ export const Register = () => {
                                     <i className="zmdi zmdi-email" />
                                 </label>
                                 <input
+                                    required
                                     type="email"
                                     name="email"
                                     id="email"
@@ -27,14 +28,17 @@ export const Register = () => {
                                     <i className="zmdi zmdi-lock" />
                                 </label>
                                 <input
+                                    required
                                     type="password"
                                     name="pass"
                                     id="pass"
                                     placeholder="Password"
                                 />
                             </div>
+                            {/*
                             <div className="form-group">
                                 <input
+                                    required
                                     type="checkbox"
                                     name="agree-term"
                                     id="agree-term"
@@ -50,6 +54,8 @@ export const Register = () => {
                                     </a>
                                 </label>
                             </div>
+                            */}
+
                             <div className="form-group form-button">
                                 <input
                                     type="submit"

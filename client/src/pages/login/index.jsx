@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export const Login = () => {
     return (
-        <section className="signin">
+        <section id="login" className="signin">
             <div className="container">
                 <div className="signin-content">
                     <div className="signin-image">
@@ -25,6 +25,7 @@ export const Login = () => {
                                     <i className="zmdi zmdi-account material-icons-name" />
                                 </label>
                                 <input
+                                    required
                                     type="text"
                                     name="your_name"
                                     id="your_name"
@@ -36,25 +37,12 @@ export const Login = () => {
                                     <i className="zmdi zmdi-lock" />
                                 </label>
                                 <input
+                                    required
                                     type="password"
                                     name="your_pass"
                                     id="your_pass"
                                     placeholder="Password"
                                 />
-                            </div>
-                            <div className="form-group">
-                                <input
-                                    type="checkbox"
-                                    name="remember-me"
-                                    id="remember-me"
-                                    className="agree-term"
-                                />
-                                <label htmlFor="remember-me" className="label-agree-term">
-                                    <span>
-                                        <span />
-                                    </span>
-                                    Remember me
-                                </label>
                             </div>
                             <div className="form-group form-button">
                                 <input
