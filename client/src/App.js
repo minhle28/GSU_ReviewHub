@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 //LAYOUTS
 import { MainLayout } from "./layouts/mainLayout";
 import { CommonLayout } from "./layouts/CommonLayout";
+import { CourseSidebar } from "./layouts/CourseSidebar/";
 
 
 //PAGES
@@ -42,7 +43,14 @@ const router = createBrowserRouter([
           },
           {
             path: "courses",
-            element: <Courses />,
+            element: <CourseSidebar />,
+            children: [
+              {
+                index: true,
+                element: <Courses />,
+              },
+
+            ],
           },
         ],
       },
