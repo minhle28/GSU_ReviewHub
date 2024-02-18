@@ -4,7 +4,6 @@
     --background-color: #FDF7F2;
     --nav-color: white;
     --menu-color: #616087;
-
 }
 
 .loading{
@@ -16,7 +15,6 @@
 .menu-courses-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 }
 
 .menu-courses-container h6 {
@@ -39,19 +37,58 @@
 .menu-courses-nav {
   padding-top: 20px;
   background-color: var(--nav-color);
-  width: 340px;
+  width: 18%;
   line-height: 50px;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   font-size: 20px;
   font-weight: 500;
   position: sticky;
   top: 0;
-  z-index: 100;
   border-right: 1px solid lightgray;
   /* position: fixed;
   z-index: 100; */
 }
 
+.menu-nav {
+    width: 18%;
+    position: fixed;
+    z-index: 100;
+}
+
+.menu-courses-nav li {
+    padding-bottom: 24px;
+  }
+
 .courses-container {
   flex: 1;
 }
+
+.form-select {
+    width: 80%;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the flex-end */
+    margin-right: 46px;
+    margin-bottom: 50px;
+}
+
+.submit-button,
+.reset-button {
+    width: 60px;
+    height: 36px;
+    line-height: 36px;
+    background-color: #0076df; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 0px 4px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+

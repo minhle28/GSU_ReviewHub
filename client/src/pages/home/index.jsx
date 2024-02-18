@@ -28,12 +28,12 @@ export const Home = () => {
                                 </p>
                             </div>
                             <div className="card-body">
-                                <Link to="/courses">
+                                <a href="/courses">
                                     <div className="btn btn-primary float-end">
                                         Explore The Course
                                         <img src="forward_icon.png" className="forward-icon" alt="Forward Icon" />
                                     </div>
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     </div>

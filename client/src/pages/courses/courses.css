@@ -1,0 +1,23 @@
+.courses-container {
+    width: 82%;
+}
+
+.all_course_list {
+    padding: 0px 50px 50px 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.all_course_list .card{
+    width: 450px;
+    height: 160px;
+    margin: 25px 25px 25px 25px;
+}
+
+.page-number {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
