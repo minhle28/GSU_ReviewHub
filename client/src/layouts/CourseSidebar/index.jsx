@@ -32,8 +32,9 @@ export const CourseSidebar = () => {
                     <form onSubmit={handleSubmit} onReset={handleReset}>
                         <ul className="menu-courses-list">
                             <li>
-                                <p>Select Term:</p>
+                                <label for="select-term">Select Term:</label>
                                 <select
+                                    id="select-term"
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
                                     value={selectedTerm}
@@ -44,8 +45,9 @@ export const CourseSidebar = () => {
                                 </select>
                             </li>
                             <li>
-                                <p>Select Department:</p>
+                                <label for="select-department">Select Department:</label>
                                 <select
+                                    id="select-department"
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
                                     value={selectedDepartment}
@@ -56,8 +58,9 @@ export const CourseSidebar = () => {
                                 </select>
                             </li>
                             <li>
-                                <p>Select Prefix:</p>
+                                <label for="select-prefix">Select Prefix:</label>
                                 <select
+                                    id="select-prefix"
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
                                     value={selectedPrefix}
@@ -68,8 +71,9 @@ export const CourseSidebar = () => {
                                 </select>
                             </li>
                             <li>
-                                <p>Select Course Number:</p>
+                                <label for="course-number">Select Course Number:</label>
                                 <select
+                                    id="course-number"
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
                                     value={selectedCourseNumber}

@@ -3,17 +3,22 @@
 }
 
 .all_course_list {
-    padding: 0px 50px 50px 50px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
+    padding: 40px 50px 50px 50px;
+    padding: 50% auto;
 }
 
-.all_course_list .card{
+.course_list_center {
+    padding: 0px 50px 50px 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    grid-gap: 60px 20px;
+    justify-items: center;
+}
+
+.all_course_list .card {
     width: 450px;
     height: 160px;
-    margin: 25px 25px 25px 25px;
+    text-decoration: none;
 }
 
 .page-number {

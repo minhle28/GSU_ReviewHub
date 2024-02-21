@@ -13,6 +13,7 @@ import { Register } from "./pages/register";
 import { Login } from "./pages/login";
 import { AboutUs } from "./pages/about-us";
 import { Courses } from "./pages/courses";
+import { CoursesDetails } from "./pages/courses-details";
 
 
 const router = createBrowserRouter([
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
               },
 
             ],
+          },
+          {
+            path: "courses-details/:id",
+            element: <CoursesDetails />,
           },
         ],
       },

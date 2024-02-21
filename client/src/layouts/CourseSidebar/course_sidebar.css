@@ -92,3 +92,8 @@
 }
 
 
+.menu-courses-list label {
+    margin-bottom: 0;
+    font-size: 15px;
+    color: #777
+}

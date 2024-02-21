@@ -345,7 +345,7 @@ input[type=checkbox]:not(old):checked+label>span:before {
     width: auto
 }
 
-label {
+#register label {
     position: absolute;
     left: 0;
     top: 50%;
