@@ -41,14 +41,34 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 40px;
-    background: linear-gradient(to left, #AEB7E2, #1b5edb); /* Example gradient */
+    background: rgba(223, 223, 223, 0.402) ;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /*background: linear-gradient(to left, #F9F6EE, #1b5edb);  Example gradient */
     border-radius: 20px;
 }
 
 .coursesdetails-container h2 {
-    color: white;
+    color: var(--bs-secondary-color) !important;
+    /*color: #F9F6EE;*/
 }
 
 .coursesdetails-container p {
-    color: black;
+    color: var(--bs-secondary-color) !important;
+}
+
+.main-review-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.student-review {
+    width: 70%;
+}
+
+.course-description {
+    width: 30%;
+    height: 200px;
+    background-color: rgba(223, 223, 223, 0.402);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
 }

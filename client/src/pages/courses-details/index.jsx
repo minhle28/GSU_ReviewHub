@@ -18,18 +18,20 @@ export const CoursesDetails = () => {
                         <h2>Course Name</h2>
                         <div className="details">
                             <p>Semester: Spring 2024</p>
-                            <br/>
+                            <br />
                             <p>Instructor: John Doe</p>
                         </div>
                     </div>
+                    <br />
 
                     <div className='main-review-container'>
                         <div className='student-review'>
-
+                            <h4>Student Reviews:</h4>
                         </div>
                         <div className='course-description'>
+                            <h6>Course Description:</h6>
 
-                        </div>    
+                        </div>
                     </div>
                 </div>
             </div>
