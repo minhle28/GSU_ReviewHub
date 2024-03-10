@@ -48,8 +48,9 @@
 }
 
 .coursesdetails-container h2 {
-    color: var(--bs-secondary-color) !important;
-    /*color: #F9F6EE;*/
+    color: black;
+    /*color: var(--bs-secondary-color) !important;
+    color: #F9F6EE;*/
 }
 
 .coursesdetails-container p {

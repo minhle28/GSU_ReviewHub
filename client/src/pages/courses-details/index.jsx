@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './courses-details.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { coursesData, comments } from '../dummyData/'; 
+import { CommentModal } from '../../layouts/CommentModal/';
 
 export const CoursesDetails = () => {
+    const { courseId } = useParams(); // Get the courseId from URL params
+    const course = coursesData.find(course => course.courseId == courseId); // Find the course by courseId
 
-    const course = coursesData[0];
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
 
     return (
         <div id="courses_details">
@@ -13,16 +20,16 @@ export const CoursesDetails = () => {
                 <Link to="/courses">
                     <i className="fa-solid fa-arrow-left"></i>
                 </Link>
-                <button className="action-button">Give a Review</button>
+                <button className="action-button" onClick={toggleModal}>Give a Review</button>
             </div>
             <div className='coursesdetails-container'>
                 <div className='container'>
                     <div id="title_container" className='container'>
-                        <h2>Course Name</h2>
+                        <h2>{course.courseCode}</h2>
                         <div className="details">
-                            <p>Semester: Spring 2024</p>
+                            <p>Semester: {course.semester}</p>
                             <br />
-                            <p>Instructor: John Doe</p>
+                            <p>Instructor: {course.instructor}</p>
                         </div>
                     </div>
                     <br /><br />
@@ -61,6 +68,7 @@ export const CoursesDetails = () => {
                 </div>
             </div>
             <br/><br/>
+            <CommentModal isOpen={isModalOpen} onClose={toggleModal} />
         </div>
     );
 }
