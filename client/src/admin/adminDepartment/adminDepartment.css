@@ -1,0 +1,25 @@
+.department .popup {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 45%;
+    background-color: #fff;
+    padding: 20px;
+    overflow-y: scroll;
+    border-radius: 15px;
+}
+
+.department input {
+    width: 100%;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 6px 30px;
+    font-family: Poppins;
+    box-sizing: border-box
+}

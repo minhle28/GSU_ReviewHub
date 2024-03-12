@@ -49,7 +49,7 @@ export const AdminDashboard = () => {
                     <li>
                         <i class='bx bxs-dollar-circle' ></i>
                         <span class="text">
-                            <h3>$0</h3>
+                            <h3>$131,4920</h3>
                             <p>Total Earns</p>
                         </span>
                     </li>

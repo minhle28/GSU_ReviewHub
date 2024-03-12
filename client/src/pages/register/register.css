@@ -89,7 +89,7 @@ p {
     color: #777
 }
 
-h2 {
+#register h2 {
     line-height: 1.66;
     margin: 0;
     padding: 0;
@@ -240,7 +240,7 @@ figure {
     margin-bottom: 0
 }
 
-input {
+#register input {
     width: 100%;
     display: block;
     border: none;

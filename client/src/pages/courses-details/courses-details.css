@@ -51,7 +51,15 @@
     color: black;
     /*color: var(--bs-secondary-color) !important;
     color: #F9F6EE;*/
+    line-height: 1.66;
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    color: #222;
+    font-family: Poppins;
+    font-size: 36px
 }
+
 
 .coursesdetails-container p {
     color: var(--bs-secondary-color) !important;

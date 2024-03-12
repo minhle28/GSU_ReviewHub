@@ -7,10 +7,10 @@ const Sidebar = ({ hidden }) => {
   const [activeMenuItem, setActiveMenuItem] = useState(0);
 
   const allSideMenu = [
-    { text: 'Dashboard', icon: 'bxs-dashboard', href: '/adminDashboard' },
-    { text: 'Courses', icon: 'bxs-shopping-bag-alt', href: '/adminCourses' },
-    { text: 'Terms', icon: 'bxs-doughnut-chart', href: '/adminTerms' },
-    { text: 'Department', icon: 'bxs-message-dots', href: '/adminDepartment' },
+    { text: 'Dashboard', icon: '/dashboard_icon.png', href: '/adminDashboard' },
+    { text: 'Courses', icon: '/courses_icon.png', href: '/adminCourses' },
+    { text: 'Terms', icon: '/terms_icon.png', href: '/adminTerms' },
+    { text: 'Department', icon: '/department_icon.png', href: '/adminDepartment' },
   ];
 
   const handleMenuItemClick = (index, route) => {
@@ -31,7 +31,7 @@ const Sidebar = ({ hidden }) => {
               to={item.href}
               onClick={() => handleMenuItemClick(index, item.href)}
             >
-              <i className={`bx ${item.icon}`}></i>
+              <img src={`${item.icon}`} alt="icons" />
               <span className="text">{item.text}</span>
             </Link>
           </li>

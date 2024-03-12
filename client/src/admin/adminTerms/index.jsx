@@ -4,33 +4,25 @@ import Navbar from '../adminLayout/NavBar';
 import "./adminTerms.css";
 import { DUMMY_DATA } from "../../dummyData/dummyData";
 
-
 export const AdminTerms = () => {
-    const [image, setImage] = useState('');
-    const [selectedSizes, setSelectedSizes] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const coursesPerPage = 10;
+    const indexOfLastCourse = currentPage * coursesPerPage;
+    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+    const currentCourses = DUMMY_DATA.slice(indexOfFirstCourse, indexOfLastCourse);
+
+    const paginate = pageNumber => {
+        if (pageNumber < 1 || pageNumber > Math.ceil(DUMMY_DATA.length / coursesPerPage)) {
+            return;
+        }
+        setCurrentPage(pageNumber);
+    };
 
     const itemsPerPage = 10;
-    const [currentPage, setCurrentPage] = useState(1);
     const [items, setItems] = useState(DUMMY_DATA);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const totalPages = Math.ceil(items.length / itemsPerPage);
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        // Perform additional logic if needed
-        setImage(file);
-    };
-
-    const handleSizeChange = (event) => {
-        const { id, checked } = event.target;
-
-        if (checked) {
-            setSelectedSizes((prevSizes) => [...prevSizes, id]);
-        } else {
-            setSelectedSizes((prevSizes) => prevSizes.filter((size) => size !== id));
-        }
-    };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -59,25 +51,21 @@ export const AdminTerms = () => {
         }
     }, [isModalOpen]);
 
-    const handlePageChange = (newPage) => {
-        setCurrentPage(newPage);
-    };
-
     const startIndex = (totalPages - currentPage) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedItems = items.slice(startIndex, endIndex);
 
     return (
-        <section id="content" className='adminPage'>
+        <section id="content" className='adminPage terms'>
             <Sidebar />
             <Navbar />
             <main className="content-main-product">
                 <div className="head-title">
                     <div className="adminLeft">
-                        <h1>Products</h1>
+                        <h1>Terms</h1>
                         <ul class="breadcrumb">
                             <li>
-                                <a href="#">Products</a>
+                                <a href="#">Terms</a>
                             </li>
                             <li><i class='bx bx-chevron-right' ></i></li>
                             <li>
@@ -90,113 +78,83 @@ export const AdminTerms = () => {
                 <table id="items-table">
                     <thead>
                         <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Size</th>
+                            <th>ID</th>
+                            <th>Terms</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {paginatedItems.reverse().map((item) => (
                             <tr key={item.id}>
-                                <td>
-                                    <a href={`products-details/${item.id}`}>
-                                        <img src={item.image} alt="Product Image" />
-                                    </a>
-                                </td>
+                                <td>{item.id}</td>
                                 <td>{item.name}</td>
-                                <td>${item.price.toFixed(2)}</td>
-                                <td>{item.categories}</td>
-                                <td>{item.size.join(', ')}</td>
-                                <td>
-                                    <div>
-                                        <a className="edit" role="button" href={`adminUpdateProduct/${item.id}`}>
-                                            Edit
-                                        </a>
-                                    </div>
+                                <td class="grid-container">
+                                    <a class="edit" role="button" href={`adminUpdateTerms/${item.id}`}>
+                                        Edit
+                                    </a>
                                     <form method="post" action="">
-                                        <button className="delete" type="submit" name="deleteProduct" value={item.id}>
+                                        <button class="delete" type="submit" name="deleteProduct" value={item.id}>
                                             Delete
                                         </button>
                                     </form>
                                 </td>
+
                             </tr>
                         ))}
                     </tbody>
                 </table>
 
                 <button id="add-btn" onClick={openModal}>
-                    Add Item
+                    Add New
                 </button>
 
                 {isModalOpen && (
                     <div id="addModal" className="modal-form">
                         <div id="popup-form" className="popup">
-                            <h2 style={{ textAlign: 'center', color: '#3C91E6' }}>Add New Item</h2>
+                            <h2 style={{ textAlign: 'center', color: 'var(--blue)' }}>Add New Term</h2>
+                            <br />
+                            <h5>EX: Spring 2024</h5>
+                            <br />
                             <form onSubmit={handleAddProduct} encType="multipart/form-data">
-                                <label htmlFor="types">Categories:</label>
-                                <select id="types" name="types">
-                                    <option value="T-shirts">T-shirts</option>
-                                    <option value="Jackets">Jackets</option>
-                                    <option value="Pants">Pants</option>
-                                    <option value="Accessories">Accessories</option>
-                                </select><br />
-
-                                <label htmlFor="name">Name:</label>
+                                <label htmlFor="name">Term:</label>
                                 <input type="text" id="name" name="nameProduct" /><br />
-
-                                <label htmlFor="price">Price:</label>
-                                <input type="text" id="price" name="price" /><br /><br />
-
-                                <label htmlFor="image">Image URL:</label><br />
-                                <input type="file" name="image" onChange={handleImageChange} /><br /><br />
-
-                                <label htmlFor="size">Size:</label>
-                                <div className="checkbox-group" id="size">
-                                    {/* Replace with your actual data source */}
-                                    {['XS', 'S', 'M', 'L', 'XL'].map((name, index) => (
-                                        <React.Fragment key={index}>
-                                            <input
-                                                type="checkbox"
-                                                id={name}
-                                                name="size[]"
-                                                value={name}
-                                                checked={selectedSizes.includes(name)}
-                                                onChange={handleSizeChange}
-                                            />
-                                            <label htmlFor={name}>{name}</label>
-                                        </React.Fragment>
-                                    ))}
-                                </div><br />
-
-                                <label htmlFor="features">Features:</label>
-                                <textarea id="description" name="description"></textarea><br />
 
                                 <button id="close-btn" type="button" onClick={closeModal}>
                                     Close
                                 </button>
                                 <button type="submit" name="addProduct">
-                                    Add Item
+                                    Add New
                                 </button>
                             </form>
                         </div>
                     </div>
                 )}
-
-                <div className="pagination">
-                    {Array.from({ length: totalPages }).map((_, index) => (
-                        <button
-                            key={index + 1}
-                            onClick={() => handlePageChange(index + 1)}
-                            className={currentPage === index + 1 ? 'active' : ''}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
+                <br /><br />
+                <div className='page-number-admin'>
+                    <div aria-label="Page navigation example">
+                        <ul className="pagination">
+                            <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
+                                <a className="page-link" href={`#${currentPage - 1}`} onClick={() => paginate(currentPage - 1)} aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            {[...Array(Math.ceil(DUMMY_DATA.length / coursesPerPage)).keys()].map((number, index) => (
+                                <li key={index} className="page-item">
+                                    <a onClick={() => paginate(number + 1)} href={`#${number + 1}`} className={`page-link ${currentPage === number + 1 ? 'active' : ''}`}>
+                                        {number + 1}
+                                    </a>
+                                </li>
+                            ))}
+                            <li className={`page-item ${currentPage >= Math.ceil(DUMMY_DATA.length / coursesPerPage) ? 'disabled' : ''}`}>
+                                <a className="page-link" href={`#${currentPage + 1}`} onClick={() => paginate(currentPage + 1)} aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </main>
         </section>
     );
 };
+

@@ -15,7 +15,7 @@ export function Header() {
         </div>
       </div>
       <div className="logo-container">
-        <img src="logo.png" alt="Logo" className="logo" />
+        <img src="/logo.png" alt="Logo" className="logo" />
         <div className="brand-name">GSU ReviewHub</div>
       </div>
       <div className="right-section">

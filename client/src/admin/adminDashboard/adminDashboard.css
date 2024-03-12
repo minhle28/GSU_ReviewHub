@@ -17,14 +17,14 @@
 }
 
 .adminPage {
-	background: var(--grey);
-	overflow-x: hidden;
+    background: var(--grey);
+    overflow-x: hidden;
 }
 
 .adminPage.dark {
-	--light: #0C0C1E;
-	--grey: #060714;
-	--dark: #FBFBFB;
+    --light: #0C0C1E;
+    --grey: #060714;
+    --dark: #FBFBFB;
 }
 
 

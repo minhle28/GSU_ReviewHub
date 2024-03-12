@@ -12,6 +12,7 @@
 #items-table {
     border-collapse: collapse;
     width: 85%;
+    align-items: center;
 }
 
 #items-table th,
@@ -19,10 +20,11 @@
     border: 1px solid #ccc;
     padding: 10px;
     background-color: white;
+    text-align: center;
 }
 
 #items-table th {
-    background-color: #4CAF50;
+    background-color: var(--blue);
     font-weight: bold;
     color: white;
 }
@@ -65,7 +67,7 @@
 #items-table .edit:hover {
     border: 1px solid #0a06ff;
     color: rgb(255, 255, 255);
-    background-color: #7e7cff;
+    background-color: #065dff;
 }
 
 #items-table td img {
@@ -129,7 +131,7 @@
 }
 
 
-.popup {
+.course .popup {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -138,10 +140,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
-    height: 80%;
+    height: 55%;
     background-color: #fff;
     padding: 20px;
     overflow-y: scroll;
+    border-radius: 15px;
 }
 
 .popup label {

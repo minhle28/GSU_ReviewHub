@@ -89,7 +89,7 @@ figure {
     color: #777
 }
 
-h2 {
+#login h2 {
     line-height: 1.66;
     margin: 0;
     padding: 0;
@@ -215,7 +215,7 @@ figure {
     margin-bottom: 0
 }
 
-input {
+#login input {
     width: 100%;
     display: block;
     border: none;
