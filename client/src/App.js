@@ -7,13 +7,22 @@ import { CommonLayout } from "./layouts/CommonLayout";
 import { CourseSidebar } from "./layouts/CourseSidebar/";
 
 
-//PAGES
+//USER PAGES
 import { Home } from "./pages/home/";
 import { Register } from "./pages/register";
 import { Login } from "./pages/login";
 import { AboutUs } from "./pages/about-us";
 import { Courses } from "./pages/courses";
 import { CoursesDetails } from "./pages/courses-details";
+
+//ADMIN
+import { AdminDashboard } from './admin/adminDashboard';
+import { AdminCourses } from './admin/adminCourses/';
+import { AdminUpdateCourses } from './admin/adminCourses/adminUpdateCourses';
+import { AdminTerms } from './admin/adminTerms/';
+import { AdminUpdateTerms } from './admin/adminTerms/adminUpdateTerms';
+import { AdminDepartment } from './admin/adminDepartment/';
+import { AdminUpdateDepartment } from './admin/adminDepartment/adminUpdateDepartment';
 
 
 const router = createBrowserRouter([
@@ -59,8 +68,37 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "adminDashboard",
+        element: <AdminDashboard />,
+      },
+      {
+        path: "adminCourses",
+        element: <AdminCourses />,
+      },
+      {
+        path: "adminUpdateCourses/:coursesID",
+        element: <AdminUpdateCourses />,
+      },
+      {
+        path: "adminTerms",
+        element: <AdminTerms />,
+      },
+      {
+        path: "adminUpdateTerms/:termsID",
+        element: <AdminUpdateTerms />,
+      },
+      {
+        path: "adminDepartment",
+        element: <AdminDepartment />,
+      },
+      {
+        path: "adminUpdateDepartment/:departmentID",
+        element: <AdminUpdateDepartment />,
+      },
     ]
   },
+
 ]);
 
 function App() {
