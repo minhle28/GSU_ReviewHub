@@ -72,8 +72,8 @@ export const Register = () => {
                             <img src="signup-image.png" alt="sing up image" />
                         </figure>
                         <Link to="/login">
-                            <a href="#" className="signup-image-link">
-                                I am already member
+                        <a href="#" className="signup-image-link">
+                                Already have an account? <span style={{ fontWeight: '800' }}>Login.</span>
                             </a>
                         </Link>
                     </div>

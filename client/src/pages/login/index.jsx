@@ -13,7 +13,7 @@ export const Login = () => {
                         </figure>
                         <Link to="/register">
                             <a className="signup-image-link">
-                                Create an account
+                                Don't have an account? <span style={{ fontWeight: '800' }}>Register here.</span>
                             </a>
                         </Link>
                     </div>
