@@ -50,9 +50,9 @@
 }
 
 .menu-nav {
-    width: 18%;
-    position: fixed;
-    z-index: 100;
+  position: sticky;
+  top: 102px;
+  z-index: 100;
 }
 
 .menu-courses-nav li {

@@ -45,7 +45,7 @@ export const CoursesDetails = () => {
                                                 <div className="bg-white p-4">
                                                     <div className="d-flex flex-row top-user-info">
                                                         <div className='d-flex flex-row user-info'>
-                                                            <img className="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" alt='avatar' width="40" />
+                                                            <img className="rounded-circle" src="/user_icon.png" alt='avatar' width="38px" height="38px" />
                                                             <div className="d-flex flex-column justify-content-start ml-2">
                                                                 <span className="d-block font-weight-bold name">{comment.name}</span>
                                                                 <span className="date text-black-50">{comment.date}</span>
