@@ -1,14 +1,14 @@
-import React from 'react'
+// Search.js
+import React from 'react';
 import './search.css';
-import { Link } from 'react-router-dom';
 
-export const Search = () => {
+export const Search = ({ handleSearch }) => {
     return (
         <div className="search">
             <div className="search-container">
-                <input type="text" className="search-input" placeholder="Search..." />
+                <input type="text" className="search-input" placeholder="Search..." onChange={handleSearch} />
                 <i className="search-icon fas fa-search" />
             </div>
         </div>
     );
-}
+};

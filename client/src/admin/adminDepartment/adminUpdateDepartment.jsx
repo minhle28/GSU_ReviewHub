@@ -36,7 +36,7 @@ export const AdminUpdateDepartment = () => {
     const handleCancelEdit = (event) => {
         event.preventDefault();
         // Add logic to handle cancel edit
-        navigate("/adminProduct");
+        navigate("/adminDepartment");
     };
 
     const handleEditProduct = (event) => {

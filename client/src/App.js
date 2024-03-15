@@ -13,7 +13,9 @@ import { Register } from "./pages/register";
 import { Login } from "./pages/login";
 import { AboutUs } from "./pages/about-us";
 import { Courses } from "./pages/courses";
-import { CoursesDetails } from "./pages/courses-details";
+import { CoursesDetails } from "./pages/courses-details/index";
+import { EditComment } from "./pages/courses-details/edit-comment";
+
 
 //ADMIN
 import { AdminDashboard } from './admin/adminDashboard';
@@ -59,13 +61,16 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Courses />,
               },
-
             ],
           },
           {
             path: "courses-details/:courseId",
             element: <CoursesDetails />,
           },
+          {
+            path: "edit-comment/:courseId",
+            element: <EditComment />,
+        },        
         ],
       },
       {

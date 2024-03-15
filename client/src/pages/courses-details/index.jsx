@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './courses-details.css';
 import { Link, useParams } from 'react-router-dom';
-import { coursesData, comments } from '../dummyData/'; 
+import { coursesData, comments } from '../dummyData/';
 import { CommentModal } from '../../layouts/CommentModal/';
 
 export const CoursesDetails = () => {
@@ -43,11 +43,23 @@ export const CoursesDetails = () => {
                                         <div className="col-md-12">
                                             <div className="d-flex flex-column comment-section">
                                                 <div className="bg-white p-4">
-                                                    <div className="d-flex flex-row user-info">
-                                                        <img className="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" alt='avatar' width="40" />
-                                                        <div className="d-flex flex-column justify-content-start ml-2">
-                                                            <span className="d-block font-weight-bold name">{comment.name}</span>
-                                                            <span className="date text-black-50">{comment.date}</span>
+                                                    <div className="d-flex flex-row top-user-info">
+                                                        <div className='d-flex flex-row user-info'>
+                                                            <img className="rounded-circle" src="https://i.imgur.com/RpzrMR2.jpg" alt='avatar' width="40" />
+                                                            <div className="d-flex flex-column justify-content-start ml-2">
+                                                                <span className="d-block font-weight-bold name">{comment.name}</span>
+                                                                <span className="date text-black-50">{comment.date}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className='action-button'>
+                                                            <Link to={`/edit-comment/${comment.id}`}>
+                                                                <img className="edit-icon-button" src="/edit_icon.png" alt='edit' width="20" />
+                                                            </Link>
+                                                            <form method="post" action="">
+                                                                <button type="submit" name="deleteProduct" value={comment.id} className="delete-icon-button">
+                                                                    <img src="/delete_icon.png" alt='delete' width="20" />
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                     <div className="mt-3">
@@ -67,7 +79,7 @@ export const CoursesDetails = () => {
                     </div>
                 </div>
             </div>
-            <br/><br/>
+            <br /><br />
             <CommentModal isOpen={isModalOpen} onClose={toggleModal} />
         </div>
     );

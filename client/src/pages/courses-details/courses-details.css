@@ -126,3 +126,59 @@
 .student-review img {
     margin-right: 20px;
 }
+
+.top-user-info {
+    justify-content: space-between;
+}
+
+.updateComment textarea {
+    display: block;
+    width: 100%;
+    height: 300px;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.edit-comment-section {
+    margin: 100px auto;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+.edit-comment-section button {
+    display: inline-block;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.edit-comment-section button[name="cancelEditProduct"] {
+    background-color: #dc3545;
+}
+
+.delete-icon-button {
+    background-color: white;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.delete-icon-button:focus {
+    outline: none; /* Remove focus outline */
+}
+
+.action-button {
+    display: flex;
+}
