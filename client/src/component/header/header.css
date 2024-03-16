@@ -81,3 +81,58 @@
   font-size: 18px;
   text-decoration: none; 
 }
+
+/* Add spacing between login and register links */
+.header-container .right-section .user-name-icon {
+  margin-right: 20px;
+}
+
+/* Adjust the color and size of login and register links */
+.header-container .right-section .user-name-icon {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none; /* Remove underline by default */
+}
+
+.header-container .left-section .user-name-icon {
+  margin-left: 20px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 140px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  left: -80px;
+}
+
+.user-name-icon {
+  position: relative; /* set the position of the parent container to relative */
+}
+
+
+.dropdown-content a {
+  display: flex;
+  align-items: center;
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.dropdown-icon {
+  margin-right: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.user-name-icon:hover .dropdown-content {
+  display: block;
+}

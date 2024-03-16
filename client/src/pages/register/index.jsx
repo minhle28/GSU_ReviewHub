@@ -1,25 +1,90 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import {
+    Button,
+    Container,
+    Form,
+  } from "react-bootstrap";
 import './register.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import ClientAPI from "../../api/clientAPI";
+import Cookies from "js-cookie";
 
 
 export const Register = () => {
+    const [user, setUser] = useState({
+        fullName: "",
+        email: "",
+        password: "",
+      });
+      
+      const navigate = useNavigate();
+      useEffect(() => {
+        if (Cookies.get("userID") !== undefined)
+          navigate("/");
+      })
+    
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+          
+          if (!user.email || !user.password || !user.fullName) {
+            return alert("Please enter your information!")
+          }
+          await ClientAPI.post("register", user);
+          //console.log("From register.jsx: ",respond);      
+          alert("Register success. Redirect to login page...")      
+          const timeout = setTimeout(() => {
+            navigate("/login");
+            clearTimeout(timeout);
+          }, 500);
+    
+        } catch (error) {
+          //console.log(error);
+          alert("Register Fail") 
+        }
+      };
+    
+      const handleInputChange = (event, key) => {
+        setUser((prev) => {
+          return {
+            ...prev,
+            [key]: event.target.value,
+          };
+        });
+      };
+
     return (
         <section id="register" className="signup">
             <div className="container">
                 <div className="signup-content">
                     <div className="signup-form">
                         <h2 className="form-title">Register</h2>
-                        <form method="POST" className="register-form" id="register-form">
+                        <Form method="POST" className="register-form" id="register-form" onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="email">
+                                <label htmlFor="name"> 
+                                    <i className="zmdi zmdi-account material-icons-name" />
+                                </label>
+                                <input
+                                    required
+                                    type="name"
+                                    value={user.fullName}
+                                    onChange={(e) => handleInputChange(e, "fullName")}
+                                    name="name"
+                                    id="user_name"
+                                    placeholder="Full Name"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="email"> 
                                     <i className="zmdi zmdi-email" />
                                 </label>
                                 <input
                                     required
                                     type="email"
+                                    value={user.email}
+                                    onChange={(e) => handleInputChange(e, "email")}
                                     name="email"
-                                    id="email"
+                                    id="user_email"
                                     placeholder="Email"
                                 />
                             </div>
@@ -30,31 +95,13 @@ export const Register = () => {
                                 <input
                                     required
                                     type="password"
-                                    name="pass"
-                                    id="pass"
+                                    value={user.password}
+                                    onChange={(e) => handleInputChange(e, "password")}
+                                    name="password"
+                                    id="user_password"
                                     placeholder="Password"
                                 />
                             </div>
-                            {/*
-                            <div className="form-group">
-                                <input
-                                    required
-                                    type="checkbox"
-                                    name="agree-term"
-                                    id="agree-term"
-                                    className="agree-term"
-                                />
-                                <label htmlFor="agree-term" className="label-agree-term">
-                                    <span>
-                                        <span />
-                                    </span>
-                                    I agree all statements in{" "}
-                                    <a href="#" className="term-service">
-                                        Terms of service
-                                    </a>
-                                </label>
-                            </div>
-                            */}
 
                             <div className="form-group form-button">
                                 <input
@@ -65,7 +112,7 @@ export const Register = () => {
                                     defaultValue="Register"
                                 />
                             </div>
-                        </form>
+                        </Form>
                     </div>
                     <div className="signup-image">
                         <figure>
