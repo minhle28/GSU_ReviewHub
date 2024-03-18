@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../adminLayout/SideBar';
 import Navbar from '../adminLayout/NavBar';
 import "./adminDashboard.css";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
+
 
 export const AdminDashboard = () => {
     const [sidebarHidden, setSidebarHidden] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (Cookies.get("isAdmin") !== '1')
+            navigate("/");
+    });
 
     const handleToggleSidebar = () => {
         setSidebarHidden(!sidebarHidden);

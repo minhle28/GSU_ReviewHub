@@ -23,19 +23,19 @@ checkDatabase();
 // read picture from disk
 const getImageData = (folder, imageName) => {
     const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);    
+    const __dirname = dirname(__filename);
     let imagePath = path.join(__dirname, folder, imageName);
     try {
         // Read the contents of the image file
         const imageData = fs.readFileSync(imagePath);
         return imageData;
-    } catch (error) {        
-        try{
+    } catch (error) {
+        try {
             imagePath = path.join(__dirname, 'images', "not-found.png");
             const imageData2 = fs.readFileSync(imagePath);
             return imageData2;
         }
-        catch(err){
+        catch (err) {
             console.error('Error reading image file:', error);
         }
         return null;
@@ -49,17 +49,17 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const list = file.originalname.split('.');
-        cb(null, `${Date.now()}.${list[list.length-1]}`); // Set your filename logic
+        cb(null, `${Date.now()}.${list[list.length - 1]}`); // Set your filename logic
     },
 });
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 // Switcher
-app.post("/dummydata", upload.single('picture'), async (req, res) => {  
-    if (req === null) return res.status(400).json("Bad Request");  
-    
+app.post("/dummydata", upload.single('picture'), async (req, res) => {
+    if (req === null) return res.status(400).json("Bad Request");
+
     let data = JSON.parse(req.body.data);
-    let key = req.body.key;  
+    let key = req.body.key;
     switch (data.action) {
         // authentication
         case "login":
@@ -71,8 +71,10 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
         case "logout":
             Authentication.logout(key, res);
             break;
-        
-        default:        
+        case "getUserFullName":
+            Authentication.getUserFullName(data, res);
+            break;
+        default:
             res.status(400).json("Bad Request");
             break;
     }
@@ -81,7 +83,7 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
 // send picture out
 app.get('/dummydata/:imageName', (req, res) => {
     const imageName = req.params.imageName;
-    const imageData = getImageData('images',imageName);
+    const imageData = getImageData('images', imageName);
 
     // Set appropriate headers
     res.setHeader('Content-Type', 'image/jpeg');
@@ -94,7 +96,7 @@ app.get('/dummydata/:imageName', (req, res) => {
 app.get('/dummydata/default/:imageName', (req, res) => {
     //console.log(req.params)
     const imageName = req.params.imageName;
-    const imageData = getImageData('default',imageName);
+    const imageData = getImageData('default', imageName);
 
     // Set appropriate headers
     res.setHeader('Content-Type', 'image/jpeg');
@@ -104,6 +106,6 @@ app.get('/dummydata/default/:imageName', (req, res) => {
     res.end(imageData);
 });
 
-app.listen(port, ()=> {
+app.listen(port, () => {
     console.log(`app listening at http://localhost:${port}`)
 })

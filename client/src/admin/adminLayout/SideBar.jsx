@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './adminLayout.css';
+import ClientAPI from "../../api/clientAPI";
+import Cookies from 'js-cookie';
 
 const Sidebar = ({ hidden }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeMenuItem, setActiveMenuItem] = useState(0);
 
   const allSideMenu = [
@@ -18,10 +21,27 @@ const Sidebar = ({ hidden }) => {
     // You can perform additional logic here based on the route if needed
   };
 
+  const handleLogOut = async () => {
+    try {
+      const data = { nothing: "nothing" };
+      await ClientAPI.post("logout", data);
+      Cookies.remove("userID")
+      Cookies.remove("isAdmin")
+      Cookies.remove("token")
+      //console.log("From HeaderLogOut.jsx: ", respond.data); 
+    }
+    catch (err) {
+      //console.log("From HeaderLogOut.jsx: ", err);
+    }
+    finally {
+      navigate("/");
+    }
+  };
+
   return (
     <section id="sidebar" className={hidden ? 'hide' : ''}>
       <Link to="/courses" className="brand">
-      <img src="/logo.png" alt="Profile" />
+        <img src="/logo.png" alt="Profile" />
         <span className="text"> GSU ReviewHub</span>
       </Link>
       <ul className="side-menu top">
@@ -37,16 +57,16 @@ const Sidebar = ({ hidden }) => {
           </li>
         ))}
       </ul>
-      <ul className="side-menu">
+      <ul className="side-menu bottom">
         <li>
           <Link to="/settings">
-            <i className="bx bxs-cog"></i>
+            <img src="/settings_icon.png" alt="Logout" className="dropdown-icon" />
             <span className="text">Settings</span>
           </Link>
         </li>
         <li>
-          <Link to="/logout" className="logout">
-            <i className="bx bxs-log-out-circle"></i>
+          <Link to="/" className="logout" onClick={handleLogOut}>
+            <img src="/logout_icon.png" alt="Logout" className="dropdown-icon" />
             <span className="text">Logout</span>
           </Link>
         </li>

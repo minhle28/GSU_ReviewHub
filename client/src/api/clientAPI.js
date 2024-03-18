@@ -9,25 +9,8 @@ export default class ClientAPI{
             case "login":                
             case "register":               
             case "logout":
-            /* product
-            case "getProduct":                
-            case "getProductDetail": 
-            case "getNewestProduct": 
-            case "removeProduct":
-            case "getCategories":
-            case "addProduct":
-            case "updateProduct":
-            // order
-            case "addCart":     
-            case "getNumberCartItem":          
-            case "getCartItem":
-            case "updateCartItem":
-            case "checkOutCart":
-            case "getContact":
-            case "getOrderHistory":                
-            case "getOrderHistoryDeatail":                
-            case "updateOrderStatus":*/
-                ////console.log("data send: ",data);
+            case "getUserFullName":
+                console.log("data send: ",data);
                 formData = MySecurity.encryptedPackage(action, data, selectedImage);  
                 break;
             default:
@@ -36,6 +19,4 @@ export default class ClientAPI{
         }       
         return await axios.post(endPoint, formData);        
     }
-    
-
 }

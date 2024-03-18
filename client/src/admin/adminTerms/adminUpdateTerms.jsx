@@ -5,6 +5,7 @@ import Navbar from '../adminLayout/NavBar';
 import "./adminTerms.css";
 import { DUMMY_DATA } from "../../dummyData/dummyData";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export const AdminUpdateTerms = () => {
     const { productId } = useParams();
@@ -15,7 +16,12 @@ export const AdminUpdateTerms = () => {
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
     const [description, setDescription] = useState('');
+
     const navigate = useNavigate();
+    useEffect(() => {
+        if (Cookies.get("isAdmin") !== '1')
+            navigate("/");
+    });
 
     const handleCancelEdit = (event) => {
         event.preventDefault();

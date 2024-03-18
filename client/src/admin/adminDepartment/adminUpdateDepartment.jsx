@@ -5,6 +5,7 @@ import Navbar from '../adminLayout/NavBar';
 import "./adminDepartment.css";
 import { DUMMY_DATA } from "../../dummyData/dummyData";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export const AdminUpdateDepartment = () => {
     const { productId } = useParams();
@@ -16,6 +17,11 @@ export const AdminUpdateDepartment = () => {
     const [selectedColors, setSelectedColors] = useState([]);
     const [description, setDescription] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (Cookies.get("isAdmin") !== '1')
+            navigate("/");
+    });
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];

@@ -3,6 +3,8 @@ import Sidebar from '../adminLayout/SideBar';
 import Navbar from '../adminLayout/NavBar';
 import "./adminDepartment.css";
 import { DUMMY_DATA } from "../../dummyData/dummyData";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export const AdminDepartment = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -10,6 +12,12 @@ export const AdminDepartment = () => {
     const indexOfLastCourse = currentPage * coursesPerPage;
     const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
     const currentCourses = DUMMY_DATA.slice(indexOfFirstCourse, indexOfLastCourse);
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (Cookies.get("isAdmin") !== '1')
+            navigate("/");
+    });
 
     const paginate = pageNumber => {
         if (pageNumber < 1 || pageNumber > Math.ceil(DUMMY_DATA.length / coursesPerPage)) {

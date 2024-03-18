@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './header.css';
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -6,7 +6,24 @@ import ClientAPI from "../../api/clientAPI";
 
 export function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [userFullName, setUserFullName] = useState(""); 
   const navigate = useNavigate();
+
+  useEffect(() => {
+      async function fetchUserFullName() {
+          try {
+              const data = { userID: Cookies.get("userID") }; // Assuming you're passing userID
+              const respond = await ClientAPI.post("getUserFullName", data);
+              setUserFullName(respond.data.fullName);
+          } catch (error) {
+              console.error("Error fetching user's full name:", error);
+          }
+      }
+
+      if (Cookies.get("userID")) {
+          fetchUserFullName();
+      }
+  }, [Cookies.get("userID")]);
 
 
   const toggleDropdown = () => {
@@ -58,7 +75,7 @@ export function Header() {
       ) : (
         <div className="right-section">
           <div className="user-name-icon">
-            Minh Le
+          {userFullName}
           </div>
           <div className="user-name-icon" onClick={toggleDropdown}>
             <img
