@@ -45,7 +45,7 @@ export const checkDatabase = async () => {
             await db3.execute(`SELECT COUNT(*) AS tableCount FROM information_schema.tables WHERE table_schema = "reviewhub"`, async (err, results) => {
                 if (err) return console.error('Error counting tables:', err);
                 const tableCount = results[0].tableCount;
-                if (tableCount < 4) {
+                if (tableCount < 5) {
                     //drop
                     await db3.execute(`DROP DATABASE IF EXISTS reviewhub`, async (err, results) => {
                         if (err) return console.error('Drop database error:', err);

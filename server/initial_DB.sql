@@ -33,6 +33,19 @@ CREATE TABLE `department`
   PRIMARY KEY (`departmentID`)
 );
 
+CREATE TABLE `courses`
+(
+  `coursesID` INT AUTO_INCREMENT,
+  `CRN` INT,
+  `coursePrefix` VARCHAR(255),
+  `courseNumber` INT,
+  `professor` VARCHAR(255),
+  `termsID` INT,
+  `departmentID` INT,
+  PRIMARY KEY (`coursesID`),
+  FOREIGN KEY (`termsID`) REFERENCES `terms`(`termsID`),
+  FOREIGN KEY (`departmentID`) REFERENCES `department`(`departmentID`)
+);
 
 INSERT INTO `user` (`userID`, `fullName`, `email`, `password`, `isAdmin`) VALUES ('1', '0', '0', '0', '1');
 
@@ -46,3 +59,6 @@ INSERT INTO `terms` (type) VALUES
 
 INSERT INTO `department` (type) VALUES
 ('Computer Science');
+
+INSERT INTO `courses` (`CRN`, `coursePrefix`, `courseNumber`, `professor`, `termsID`, `departmentID`)
+VALUES (102982, 'CSC', 4350, 'Tanvir, Farhan', 2, 1);

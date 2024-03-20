@@ -91,7 +91,8 @@ export const AdminCourses = () => {
                         <tr>
                             <th>ID</th>
                             <th>CRN</th>
-                            <th>Course</th>
+                            <th>Course Prefix</th>
+                            <th>Course Number</th>
                             <th>Professor</th>
                             <th>Terms</th>
                             <th>Departments</th>
@@ -102,6 +103,7 @@ export const AdminCourses = () => {
                         {paginatedItems.reverse().map((item) => (
                             <tr key={item.id}>
                                 <td>{item.id}</td>
+                                <td>{item.name}</td>
                                 <td>{item.name}</td>
                                 <td>{item.name}</td>
                                 <td>{item.name}</td>

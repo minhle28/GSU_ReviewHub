@@ -76,7 +76,7 @@ export const AdminDashboard = () => {
                             <thead>
                                 <tr>
                                     <th>User</th>
-                                    <th>Date Order</th>
+                                    <th>Date</th>
                                     <th>Operator</th>
                                     <th>Status</th>
                                     <th>Role</th>

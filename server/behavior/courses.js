@@ -2,6 +2,7 @@ import { db } from "../db.js"
 import MySecurity from "./myServerSecurity.js";
 
 export default class Courses {
+    /*---------------------------TERMS------------------------------ */
     static async getTerms(key, inputD, res) {
         try {
             db.execute(`SELECT * FROM terms`, (err, data) => {
@@ -63,7 +64,7 @@ export default class Courses {
         catch (error) {
             return res.status(500).json("Failed to get terms. " + error);
         }
-        
+
     }
 
     static addTerms(inputD, res) {
@@ -74,7 +75,7 @@ export default class Courses {
             }
             const insertQuery = `INSERT INTO terms (type) VALUES (?)`;
             db.execute(insertQuery, [terms], (err, data) => {
-                if (err) { 
+                if (err) {
                     console.error("Error executing SQL query:", err);
                     return res.status(500).json(err);
                 }
@@ -86,7 +87,7 @@ export default class Courses {
             return res.status(500).json("Failed to add term. " + error);
         }
     }
-    
+
     static deleteTerms(inputD, res) {
         try {
             const { termID } = inputD;
@@ -95,7 +96,7 @@ export default class Courses {
             }
             const deleteQuery = `DELETE FROM terms WHERE termsID = ?`;
             db.execute(deleteQuery, [termID], (err, data) => {
-                if (err) { 
+                if (err) {
                     console.error("Error executing SQL query:", err);
                     return res.status(500).json(err);
                 }
@@ -118,7 +119,7 @@ export default class Courses {
             // Execute SQL query to update the term
             const updateQuery = `UPDATE terms SET type = ? WHERE termsID = ?`;
             db.execute(updateQuery, [name, termID], (err, data) => {
-                if (err) { 
+                if (err) {
                     console.error("Error executing SQL query:", err);
                     return res.status(500).json(err);
                 }
@@ -130,7 +131,7 @@ export default class Courses {
             return res.status(500).json("Failed to update term. " + error);
         }
     }
-    
+
 
     static getTermsDetail(key, inputD, res) {
         try {
@@ -138,17 +139,17 @@ export default class Courses {
             if (!termID) {
                 return res.status(400).json("Term ID is missing.");
             }
-    
+
             // Fetch term details including the term name
             db.execute(`SELECT terms.*, type AS name FROM terms WHERE termsID = ?`, [termID], (err, data) => {
                 if (err) {
                     return res.status(500).json(err);
                 }
-    
+
                 if (data.length === 0) {
                     return res.status(404).json("Term not found.");
                 }
-    
+
                 const termData = data[0];
                 const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), termData);
                 return res.status(200).json(encryptedData);
@@ -158,5 +159,117 @@ export default class Courses {
             return res.status(500).json("Failed to get term detail. " + error);
         }
     }
-    
+
+    /*---------------------------DEPARTMENT------------------------------ */
+    static async getDepartment(key, inputD, res) {
+        try {
+            db.execute(`SELECT * FROM department`, (err, data) => {
+                if (err) return res.status(500).json(err);
+
+                const department = data.map(term => ({
+                    id: term.departmentID,
+                    name: term.type
+                }));
+
+                const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), department);
+                return res.status(200).json(encryptedData);
+            });
+        }
+        catch (error) {
+            return res.status(500).json("Failed to get department. " + error);
+        }
+
+    }
+
+    static addDepartment(inputD, res) {
+        try {
+            const { department } = inputD;
+            if (!department) {
+                throw new Error("Department name is missing or undefined.");
+            }
+            const insertQuery = `INSERT INTO department (type) VALUES (?)`;
+            db.execute(insertQuery, [department], (err, data) => {
+                if (err) {
+                    console.error("Error executing SQL query:", err);
+                    return res.status(500).json(err);
+                }
+                return res.status(200).json("Department Added Successfully.");
+            });
+        }
+        catch (error) {
+            console.error("Error adding Department:", error);
+            return res.status(500).json("Failed to add Department. " + error);
+        }
+    }
+
+    static deleteDepartment(inputD, res) {
+        try {
+            const { departmentID } = inputD;
+            if (!departmentID) {
+                throw new Error("Department ID is missing or undefined.");
+            }
+            const deleteQuery = `DELETE FROM department WHERE departmentID = ?`;
+            db.execute(deleteQuery, [departmentID], (err, data) => {
+                if (err) {
+                    console.error("Error executing SQL query:", err);
+                    return res.status(500).json(err);
+                }
+                return res.status(200).json("Department Deleted Successfully.");
+            });
+        }
+        catch (error) {
+            console.error("Error deleting Department:", error);
+            return res.status(500).json("Failed to delete Department. " + error);
+        }
+    }
+
+    static async updateDepartment(inputData, res) {
+        try {
+            console.log('Received data:', inputData); // Log received data
+            const { departmentID, name } = inputData;
+            if (!departmentID || !name) {
+                throw new Error("Department ID or name is missing or undefined.");
+            }
+            // Execute SQL query to update the Department
+            const updateQuery = `UPDATE department SET type = ? WHERE departmentID = ?`;
+            db.execute(updateQuery, [name, departmentID], (err, data) => {
+                if (err) {
+                    console.error("Error executing SQL query:", err);
+                    return res.status(500).json(err);
+                }
+                return res.status(200).json("Department updated successfully.");
+            });
+        }
+        catch (error) {
+            console.error("Error updating Department:", error);
+            return res.status(500).json("Failed to update Department. " + error);
+        }
+    }
+
+
+    static getDepartmentDetail(key, inputD, res) {
+        try {
+            const departmentID = inputD.departmentID;
+            if (!departmentID) {
+                return res.status(400).json("Department ID is missing.");
+            }
+
+            db.execute(`SELECT department.*, type AS name FROM department WHERE departmentID = ?`, [departmentID], (err, data) => {
+                if (err) {
+                    return res.status(500).json(err);
+                }
+
+                if (data.length === 0) {
+                    return res.status(404).json("Department not found.");
+                }
+
+                const departmentData = data[0];
+                const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), departmentData);
+                return res.status(200).json(encryptedData);
+            });
+        } catch (error) {
+            console.error("Error getting department detail:", error);
+            return res.status(500).json("Failed to get department detail. " + error);
+        }
+    }
 }

@@ -3,68 +3,77 @@ import { useParams } from 'react-router-dom';
 import Sidebar from '../adminLayout/SideBar';
 import Navbar from '../adminLayout/NavBar';
 import "./adminDepartment.css";
-import { DUMMY_DATA } from "../../dummyData/dummyData";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import ClientAPI from "../../api/clientAPI";
+import MySecurity from "../../api/mySecurity";
 
 export const AdminUpdateDepartment = () => {
-    const { productId } = useParams();
-    const [types, setTypes] = useState('');
-    const [nameProduct, setNameProduct] = useState('');
-    const [price, setPrice] = useState('');
-    const [image, setImage] = useState('');
-    const [selectedSizes, setSelectedSizes] = useState([]);
-    const [selectedColors, setSelectedColors] = useState([]);
-    const [description, setDescription] = useState('');
+    const { departmentID } = useParams();
+    const [departmentName, setDepartmentName] = useState('');
     const navigate = useNavigate();
+    const [departmentData, setDepartmentData] = useState(null);
+    const [inputValues, setInputValues] = useState({});
 
     useEffect(() => {
         if (Cookies.get("isAdmin") !== '1')
             navigate("/");
-    });
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        // Perform additional logic if needed
-        setImage(file);
-    };
+    }, []);
 
-    const handleSizeChange = (event) => {
-        const { id, checked } = event.target;
-
-        if (checked) {
-            setSelectedSizes((prevSizes) => [...prevSizes, id]);
-        } else {
-            setSelectedSizes((prevSizes) => prevSizes.filter((size) => size !== id));
-        }
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setInputValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
     };
 
     const handleCancelEdit = (event) => {
         event.preventDefault();
-        // Add logic to handle cancel edit
         navigate("/adminDepartment");
     };
 
-    const handleEditProduct = (event) => {
+    // update product
+    const handleEditDepartment = async (event) => {
         event.preventDefault();
-        // Add logic to edit the product
-        // ...
+        // Submit change
+        try {
+            let data = {
+                ...inputValues,
+            }
+            const respond = await ClientAPI.post("updateDepartment", data);
+            if (respond.data !== null && respond.data !== undefined) {
+                //alert("Edited: ")
+                navigate("/adminDepartment")
+            }
+        }
+        catch (err) {
+            alert("Can not Edit", err)
+        }
     };
 
     useEffect(() => {
-        // Add logic to fetch product details using productId and update state variables
-        const productDetails = DUMMY_DATA.find(item => item.id === parseInt(productId));
-        if (productDetails) {
-            setTypes(productDetails.categories);
-            setNameProduct(productDetails.name);
-            setPrice(productDetails.price);
-            setImage(productDetails.image);
-            setSelectedSizes(productDetails.size);
-            // Assuming color is available in the dummy data
-            setSelectedColors(productDetails.color);
-            setDescription(productDetails.description);
+        async function fetchData() {
+            try {
+                const data = {
+                    departmentID: departmentID,
+                };
+                // get information
+                const respond = await ClientAPI.post("getDepartmentDetail", data);
+                let departmentData = MySecurity.decryptedData(respond.data);
+                setInputValues({
+                    departmentID: departmentID,
+                    name: departmentData.name,
+                });
+            }
+            catch (err) {
+                alert("Can not Fetch", err)
+            }
         }
-    }, [productId]);
+        fetchData();
+    }, []);
+
 
     return (
         <section id="content" className='adminPage'>
@@ -73,10 +82,10 @@ export const AdminUpdateDepartment = () => {
             <main>
                 <div className="head-title">
                     <div className="adminLeft">
-                        <h1>Edit Departments</h1>
+                        <h1>Edit Department</h1>
                         <ul class="breadcrumb">
                             <li>
-                                <a href="#">Departments</a>
+                                <a href="#">Department</a>
                             </li>
                             <li><i class='bx bx-chevron-right' ></i></li>
                             <li>
@@ -91,16 +100,29 @@ export const AdminUpdateDepartment = () => {
                 </div>
 
                 <div className="updateProduct">
-                    <form onSubmit={handleEditProduct} encType="multipart/form-data">
-                        <label htmlFor="name">Department:</label>
-                        <input type="text" id="name" name="nameProduct" /><br />
+                    <form onSubmit={handleEditDepartment} encType="multipart/form-data">
+                        <label htmlFor="name">Department Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={inputValues.name}
+                            onChange={handleInputChange}
+                            required
+                        /><br />
 
-                        <button type="button" name="cancelEditProduct" onClick={handleCancelEdit} style={{ marginRight: '10px' }} >Cancel</button>
-                        <button type="submit" name="editProduct">Edit Item</button>
+                        <button
+                            type="button"
+                            name="cancelEditDepartment"
+                            onClick={handleCancelEdit}
+                            style={{ marginRight: '10px' }}
+                        >
+                            Cancel
+                        </button>
+                        <button type="submit" name="editDepartment">Edit Department</button>
                     </form>
                 </div>
             </main>
         </section>
     );
 };
-

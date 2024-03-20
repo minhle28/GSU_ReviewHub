@@ -79,6 +79,8 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
         case "getUserFullName":
             Authentication.getUserFullName(data, res);
             break;
+
+        //term
         case "getTerms":
             Courses.getTerms(key, data, res);
             break;
@@ -93,6 +95,23 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
             break;
         case "getTermsDetail":
             Courses.getTermsDetail(key, data.entry, res);
+            break;
+            
+        //department
+        case "getDepartment":
+            Courses.getDepartment(key, data, res);
+            break;
+        case "addDepartment":
+            Courses.addDepartment(data.entry, res);
+            break;
+        case "deleteDepartment":
+            Courses.deleteDepartment(data.entry, res);
+            break;
+        case "updateDepartment":
+            Courses.updateDepartment(data.entry, res);
+            break;
+        case "getDepartmentDetail":
+            Courses.getDepartmentDetail(key, data.entry, res);
             break;
         default:
             res.status(400).json("Bad Request");
