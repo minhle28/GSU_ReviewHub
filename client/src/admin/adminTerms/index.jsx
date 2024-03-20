@@ -2,35 +2,45 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../adminLayout/SideBar';
 import Navbar from '../adminLayout/NavBar';
 import "./adminTerms.css";
-import { DUMMY_DATA } from "../../dummyData/dummyData";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import ClientAPI from "../../api/clientAPI";
 
 export const AdminTerms = () => {
+    const [terms, setTerms] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const coursesPerPage = 10;
-    const indexOfLastCourse = currentPage * coursesPerPage;
-    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-    const currentCourses = DUMMY_DATA.slice(indexOfFirstCourse, indexOfLastCourse);
+    const termsPerPage = 10;
+    const indexOfLastTerm = currentPage * termsPerPage;
+    const indexOfFirstTerm = indexOfLastTerm - termsPerPage;
+    const currentTerms = terms.slice(indexOfFirstTerm, indexOfLastTerm);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const navigate = useNavigate();
     useEffect(() => {
         if (Cookies.get("isAdmin") !== '1')
             navigate("/");
-    });
+    }, []);
+
+    async function fetchTerms() {
+        try {
+            const data = { limit: termsPerPage, page: currentPage };
+            const response = await ClientAPI.post("getTerms", data);
+            setTerms(response.data);
+        } catch (error) {
+            console.error("Error fetching terms:", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchTerms();
+    }, [currentPage]);
 
     const paginate = pageNumber => {
-        if (pageNumber < 1 || pageNumber > Math.ceil(DUMMY_DATA.length / coursesPerPage)) {
+        if (pageNumber < 1 || pageNumber > Math.ceil(terms.length / termsPerPage)) {
             return;
         }
         setCurrentPage(pageNumber);
     };
-
-    const itemsPerPage = 10;
-    const [items, setItems] = useState(DUMMY_DATA);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const totalPages = Math.ceil(items.length / itemsPerPage);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -40,12 +50,36 @@ export const AdminTerms = () => {
         setIsModalOpen(false);
     };
 
-    const handleAddProduct = (event) => {
+    const handleAddTerms = async (event) => {
         event.preventDefault();
-        // Add logic to add a new product
-        // ...
+        try {
+            const name = event.target.elements.terms.value;
+            const data = { terms: name }; 
+            const response = await ClientAPI.post("addTerms", data);
+            console.log('start from herer', response.data);
+            await fetchTerms();
+        } catch (error) {
+            console.error("Error adding term:", error);
+            console.log("Error details:", error.response.data);
+        }
         closeModal();
     };
+
+    const removeTerm = async (event, termID) => {
+        event.preventDefault();
+        try {
+            const data = {
+                termID: termID,
+            }
+            await ClientAPI.post("deleteTerms", data);
+            alert("Deleted Term Successfully");
+            await fetchTerms();
+        } catch (error) {
+            console.error("Error deleting term:", error);
+            alert("Error deleting term: " + error.message);
+        }
+    }
+    
 
     useEffect(() => {
         const modalForm = document.getElementById("addModal");
@@ -58,10 +92,6 @@ export const AdminTerms = () => {
             }
         }
     }, [isModalOpen]);
-
-    const startIndex = (totalPages - currentPage) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedItems = items.slice(startIndex, endIndex);
 
     return (
         <section id="content" className='adminPage terms'>
@@ -92,21 +122,20 @@ export const AdminTerms = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {paginatedItems.reverse().map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.id}</td>
-                                <td>{item.name}</td>
+                        {currentTerms.map((term) => (
+                            <tr key={term.id}>
+                                <td>{term.id}</td>
+                                <td>{term.name}</td>
                                 <td class="grid-container">
-                                    <a class="edit" role="button" href={`adminUpdateTerms/${item.id}`}>
+                                    <a class="edit" role="button" href={`adminUpdateTerms/${term.id}`}>
                                         Edit
                                     </a>
                                     <form method="post" action="">
-                                        <button class="delete" type="submit" name="deleteProduct" value={item.id}>
+                                        <button className="delete" onClick={(e) => removeTerm(e, term.id)}>
                                             Delete
                                         </button>
                                     </form>
                                 </td>
-
                             </tr>
                         ))}
                     </tbody>
@@ -121,11 +150,11 @@ export const AdminTerms = () => {
                         <div id="popup-form" className="popup">
                             <h2 style={{ textAlign: 'center', color: 'var(--blue)' }}>Add New Term</h2>
                             <br />
-                            <h5>EX: Spring 2024</h5>
+                            <h5>EX: SP 2024</h5>
                             <br />
-                            <form onSubmit={handleAddProduct} encType="multipart/form-data">
-                                <label htmlFor="name">Term:</label>
-                                <input type="text" id="name" name="nameProduct" /><br />
+                            <form onSubmit={handleAddTerms} encType="multipart/form-data">
+                                <label htmlFor="terms">Term:</label>
+                                <input required type="text" id="terms" name="terms" /><br />
 
                                 <button id="close-btn" type="button" onClick={closeModal}>
                                     Close
@@ -146,14 +175,14 @@ export const AdminTerms = () => {
                                     <span aria-hidden="true">«</span>
                                 </a>
                             </li>
-                            {[...Array(Math.ceil(DUMMY_DATA.length / coursesPerPage)).keys()].map((number, index) => (
+                            {[...Array(Math.ceil(terms.length / termsPerPage)).keys()].map((number, index) => (
                                 <li key={index} className="page-item">
                                     <a onClick={() => paginate(number + 1)} href={`#${number + 1}`} className={`page-link ${currentPage === number + 1 ? 'active' : ''}`}>
                                         {number + 1}
                                     </a>
                                 </li>
                             ))}
-                            <li className={`page-item ${currentPage >= Math.ceil(DUMMY_DATA.length / coursesPerPage) ? 'disabled' : ''}`}>
+                            <li className={`page-item ${currentPage >= Math.ceil(terms.length / termsPerPage) ? 'disabled' : ''}`}>
                                 <a className="page-link" href={`#${currentPage + 1}`} onClick={() => paginate(currentPage + 1)} aria-label="Next">
                                     <span aria-hidden="true">»</span>
                                 </a>
@@ -165,4 +194,3 @@ export const AdminTerms = () => {
         </section>
     );
 };
-

@@ -9,6 +9,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from "path";
 import Authentication from "./behavior/authentication.js";
+import Courses from "./behavior/courses.js";
+//import { Courses } from "../client/src/pages/courses/index.jsx";
 // Server port
 var app = express()
 const port = 3000
@@ -57,9 +59,12 @@ const upload = multer({ storage: storage });
 // Switcher
 app.post("/dummydata", upload.single('picture'), async (req, res) => {
     if (req === null) return res.status(400).json("Bad Request");
-
+    console.log('body:');
+    console.log(req.body)
     let data = JSON.parse(req.body.data);
     let key = req.body.key;
+    console.log('data');
+    console.log(data);
     switch (data.action) {
         // authentication
         case "login":
@@ -73,6 +78,21 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
             break;
         case "getUserFullName":
             Authentication.getUserFullName(data, res);
+            break;
+        case "getTerms":
+            Courses.getTerms(key, data, res);
+            break;
+        case "addTerms":
+            Courses.addTerms(data.entry, res);
+            break;
+        case "deleteTerms":
+            Courses.deleteTerms(data.entry, res);
+            break;
+        case "updateTerms":
+            Courses.updateTerms(data.entry, res);
+            break;
+        case "getTermsDetail":
+            Courses.getTermsDetail(key, data.entry, res);
             break;
         default:
             res.status(400).json("Bad Request");

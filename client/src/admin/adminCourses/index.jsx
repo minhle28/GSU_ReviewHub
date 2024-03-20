@@ -91,8 +91,8 @@ export const AdminCourses = () => {
                         <tr>
                             <th>ID</th>
                             <th>CRN</th>
-                            <th>Name</th>
-                            <th>Instructor</th>
+                            <th>Course</th>
+                            <th>Professor</th>
                             <th>Terms</th>
                             <th>Departments</th>
                             <th>Actions</th>

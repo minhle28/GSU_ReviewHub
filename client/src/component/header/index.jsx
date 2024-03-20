@@ -12,7 +12,7 @@ export function Header() {
   useEffect(() => {
       async function fetchUserFullName() {
           try {
-              const data = { userID: Cookies.get("userID") }; // Assuming you're passing userID
+              const data = { userID: Cookies.get("userID") };
               const respond = await ClientAPI.post("getUserFullName", data);
               setUserFullName(respond.data.fullName);
           } catch (error) {

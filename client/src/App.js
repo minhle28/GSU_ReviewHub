@@ -90,7 +90,7 @@ const router = createBrowserRouter([
         element: <AdminTerms />,
       },
       {
-        path: "adminUpdateTerms/:termsID",
+        path: "adminUpdateTerms/:termID",
         element: <AdminUpdateTerms />,
       },
       {
