@@ -5,8 +5,8 @@ import { coursesData, comments } from '../dummyData/';
 import { CommentModal } from '../../layouts/CommentModal/';
 
 export const CoursesDetails = () => {
-    const { courseId } = useParams(); // Get the courseId from URL params
-    const course = coursesData.find(course => course.courseId == courseId); // Find the course by courseId
+    const { coursesId } = useParams(); // Get the courseId from URL params
+    const course = coursesData.find(course => course.courseId == coursesId); // Find the course by courseId
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
