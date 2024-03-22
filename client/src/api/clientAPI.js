@@ -26,6 +26,13 @@ export default class ClientAPI {
             case "deleteDepartment":
             case "updateDepartment":
             case "getDepartmentDetail":
+
+            //department
+            case "getCourses":
+            case "addCourses":
+            case "deleteCourses":
+            case "updateCourses":
+            case "getCoursesDetail":
                 console.log("data send: ", data);
                 formData = MySecurity.encryptedPackage(action, data, selectedImage);
                 break;

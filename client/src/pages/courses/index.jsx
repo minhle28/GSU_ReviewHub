@@ -44,7 +44,7 @@ export const Courses = () => {
                                 </div>
                                 <div className="card-body">
                                     <blockquote className="blockquote mb-0">
-                                        <p>Description: {course.description}</p>
+                                        <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                     </blockquote>
                                 </div>
                             </div>

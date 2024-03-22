@@ -26,9 +26,9 @@ a:active {
     -ms-transition: all 300ms ease 0s
 }
 
-input,
-select,
-textarea {
+#register input,
+#register select,
+#register textarea {
     outline: none;
     appearance: unset !important;
     -moz-appearance: unset !important;
@@ -250,43 +250,43 @@ figure {
     box-sizing: border-box
 }
 
-input::-webkit-input-placeholder {
+#register input::-webkit-input-placeholder {
     color: #999
 }
 
-input::-moz-placeholder {
+#register input::-moz-placeholder {
     color: #999
 }
 
-input:-ms-input-placeholder {
+#register input:-ms-input-placeholder {
     color: #999
 }
 
-input:-moz-placeholder {
+#register input:-moz-placeholder {
     color: #999
 }
 
-input:focus {
+#register input:focus {
     border-bottom: 1px solid #222
 }
 
-input:focus::-webkit-input-placeholder {
+#register input:focus::-webkit-input-placeholder {
     color: #222
 }
 
-input:focus::-moz-placeholder {
+#register input:focus::-moz-placeholder {
     color: #222
 }
 
-input:focus:-ms-input-placeholder {
+#register input:focus:-ms-input-placeholder {
     color: #222
 }
 
-input:focus:-moz-placeholder {
+#register input:focus:-moz-placeholder {
     color: #222
 }
 
-input[type=checkbox]:not(old) {
+#register input[type=checkbox]:not(old) {
     width: 2em;
     margin: 0;
     padding: 0;
@@ -294,13 +294,13 @@ input[type=checkbox]:not(old) {
     display: none
 }
 
-input[type=checkbox]:not(old)+label {
+#register input[type=checkbox]:not(old)+label {
     display: inline-block;
     line-height: 1.5em;
     margin-top: 6px
 }
 
-input[type=checkbox]:not(old)+label>span {
+#register input[type=checkbox]:not(old)+label>span {
     display: inline-block;
     width: 13px;
     height: 13px;
@@ -321,7 +321,7 @@ input[type=checkbox]:not(old)+label>span {
     vertical-align: bottom
 }
 
-input[type=checkbox]:not(old):checked+label>span {
+#register input[type=checkbox]:not(old):checked+label>span {
     background-image: -moz-linear-gradient(white, white);
     background-image: -ms-linear-gradient(white, white);
     background-image: -o-linear-gradient(white, white);
@@ -329,7 +329,7 @@ input[type=checkbox]:not(old):checked+label>span {
     background-image: linear-gradient(white, white)
 }
 
-input[type=checkbox]:not(old):checked+label>span:before {
+#register input[type=checkbox]:not(old):checked+label>span:before {
     content: '\f26b';
     display: block;
     color: #222;

@@ -3,68 +3,72 @@ import { useParams } from 'react-router-dom';
 import Sidebar from '../adminLayout/SideBar';
 import Navbar from '../adminLayout/NavBar';
 import "./adminCourses.css";
-import { DUMMY_DATA } from "../../dummyData/dummyData";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import ClientAPI from "../../api/clientAPI";
+import MySecurity from "../../api/mySecurity";
 
 export const AdminUpdateCourses = () => {
-    const { productId } = useParams();
-    const [types, setTypes] = useState('');
-    const [nameProduct, setNameProduct] = useState('');
-    const [price, setPrice] = useState('');
-    const [image, setImage] = useState('');
-    const [selectedSizes, setSelectedSizes] = useState([]);
-    const [selectedColors, setSelectedColors] = useState([]);
-    const [description, setDescription] = useState('');
+    const { coursesID } = useParams();
     const navigate = useNavigate();
+    const [termsData, setTermsData] = useState([]);
+    const [departmentData, setDepartmentData] = useState([]);
+    const [inputValues, setInputValues] = useState({});
 
     useEffect(() => {
         if (Cookies.get("isAdmin") !== '1')
             navigate("/");
-    });
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        // Perform additional logic if needed
-        setImage(file);
-    };
+        async function fetchData() {
+            try {
+                const data = { coursesID: coursesID };
 
-    const handleSizeChange = (event) => {
-        const { id, checked } = event.target;
+                const respond1 = await ClientAPI.post("getTerms", data);
+                setTermsData(MySecurity.decryptedData(respond1.data));
 
-        if (checked) {
-            setSelectedSizes((prevSizes) => [...prevSizes, id]);
-        } else {
-            setSelectedSizes((prevSizes) => prevSizes.filter((size) => size !== id));
+                const respond2 = await ClientAPI.post("getDepartment", data);
+                setDepartmentData(MySecurity.decryptedData(respond2.data));
+
+                const respond3 = await ClientAPI.post("getCoursesDetail", data);
+                const coursesData = MySecurity.decryptedData(respond3.data);
+                setInputValues({
+                    coursesID: coursesID,
+                    termsID: coursesData.termsID,
+                    departmentID: coursesData.departmentID,
+                });
+            }
+            catch (err) {
+                alert("Can not Fetch", err)
+            }
         }
+        fetchData();
+    }, []);
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setInputValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
     };
 
     const handleCancelEdit = (event) => {
         event.preventDefault();
-        // Add logic to handle cancel edit
         navigate("/adminCourses");
     };
 
-    const handleEditProduct = (event) => {
+    const handleEditCourses = async (event) => {
         event.preventDefault();
-        // Add logic to edit the product
-        // ...
-    };
-
-    useEffect(() => {
-        // Add logic to fetch product details using productId and update state variables
-        const productDetails = DUMMY_DATA.find(item => item.id === parseInt(productId));
-        if (productDetails) {
-            setTypes(productDetails.categories);
-            setNameProduct(productDetails.name);
-            setPrice(productDetails.price);
-            setImage(productDetails.image);
-            setSelectedSizes(productDetails.size);
-            // Assuming color is available in the dummy data
-            setSelectedColors(productDetails.color);
-            setDescription(productDetails.description);
+        try {
+            const respond = await ClientAPI.post("updateCourses", inputValues);
+            if (respond.data !== null && respond.data !== undefined) {
+                navigate("/adminCourses");
+            }
         }
-    }, [productId]);
+        catch (err) {
+            alert("Can not Edit", err)
+        }
+    };
 
     return (
         <section id="content" className='adminPage'>
@@ -89,29 +93,32 @@ export const AdminUpdateCourses = () => {
                         </ul>
                     </div>
                 </div>
+                {(termsData.length > 0 && departmentData.length > 0) ? (
+                    <div className="updateProduct">
+                        <form onSubmit={handleEditCourses} encType="multipart/form-data">
+                            <label htmlFor="termsID">Select Terms:</label>
+                            <select id="termsID" name="termsID" value={inputValues.termsID} onChange={handleInputChange}>
+                                {termsData.map(row => (
+                                    <option key={row.id} value={row.id}>{row.name}</option>
+                                ))}
+                            </select><br />
+                            <label htmlFor="departmentID">Select Departments:</label>
+                            <select id="departmentID" name="departmentID" value={inputValues.departmentID} onChange={handleInputChange}>
+                                {departmentData.map(row => (
+                                    <option key={row.id} value={row.id}>{row.name}</option>
+                                ))}
+                            </select><br />
 
-                <div className="updateProduct">
-                    <form onSubmit={handleEditProduct} encType="multipart/form-data">
-                        <label htmlFor="types">Select Terms:</label>
-                        <select id="types" name="types">
-                            <option value="T-shirts">Spring 2023</option>
-                            <option value="Jackets">Summer 2023</option>
-                            <option value="Pants">Fall 2023</option>
-                            <option value="Accessories">Winter 2023</option>
-                        </select><br />
-                        <label htmlFor="types">Select Departments:</label>
-                        <select id="types" name="types">
-                            <option value="T-shirts">Computer Science</option>
-                            <option value="Jackets">Business</option>
-                            <option value="Pants">Economics</option>
-                        </select><br />
-
-                        <button type="button" name="cancelEditProduct" onClick={handleCancelEdit} style={{ marginRight: '10px' }} >Cancel</button>
-                        <button type="submit" name="editProduct">Edit Item</button>
-                    </form>
-                </div>
+                            <button type="button" name="cancelEditProduct" onClick={handleCancelEdit} style={{ marginRight: '10px' }}>Cancel</button>
+                            <button type="submit" name="editProduct">Edit Item</button>
+                        </form>
+                    </div>
+                ) : (
+                    <div className="updateProduct">
+                        <p>Loading...</p>
+                    </div>
+                )}
             </main>
         </section>
     );
 };
-

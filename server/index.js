@@ -96,7 +96,7 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
         case "getTermsDetail":
             Courses.getTermsDetail(key, data.entry, res);
             break;
-            
+
         //department
         case "getDepartment":
             Courses.getDepartment(key, data, res);
@@ -113,9 +113,28 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
         case "getDepartmentDetail":
             Courses.getDepartmentDetail(key, data.entry, res);
             break;
+
+        //courses
+        case "getCourses":
+            Courses.getCourses(key, data, res);
+            break;
+        case "addCourses":
+            Courses.addCourses(data.entry, res);
+            break;
+        case "deleteCourses":
+            Courses.deleteCourses(data.entry, res);
+            break;
+        case "updateCourses":
+            Courses.updateCourses(data.entry, res);
+            break;
+        case "getCoursesDetail":
+            Courses.getCoursesDetail(key, data.entry, res);
+            break;
+            
         default:
             res.status(400).json("Bad Request");
             break;
+
     }
 })
 

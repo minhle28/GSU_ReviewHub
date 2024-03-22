@@ -2,38 +2,60 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../adminLayout/SideBar';
 import Navbar from '../adminLayout/NavBar';
 import "./adminCourses.css";
-import { DUMMY_DATA } from "../../dummyData/dummyData";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import ClientAPI from "../../api/clientAPI";
 
 export const AdminCourses = () => {
+    const [courses, setCourses] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const coursesPerPage = 10;
-    const indexOfLastCourse = currentPage * coursesPerPage;
-    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-    const currentCourses = DUMMY_DATA.slice(indexOfFirstCourse, indexOfLastCourse);
+    const indexOfLastCourses = currentPage * coursesPerPage;
+    const indexOfFirstCourses = indexOfLastCourses - coursesPerPage;
+    const currentCourses = courses.slice(indexOfFirstCourses, indexOfLastCourses);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [terms, setTerms] = useState([]);
+    const [departments, setDepartments] = useState([]);
 
     const navigate = useNavigate();
     useEffect(() => {
         if (Cookies.get("isAdmin") !== '1')
             navigate("/");
-    });
+    }, []);
+
+    async function fetchCourses() {
+        try {
+            const data = { limit: coursesPerPage, page: currentPage };
+            const response = await ClientAPI.post("getCourses", data);
+            setCourses(response.data);
+        } catch (error) {
+            console.error("Error fetching Courses:", error);
+        }
+    }
+
+    async function fetchTermsAndDepartments() {
+        try {
+            const response1 = await ClientAPI.post("getTerms");
+            setTerms(response1.data);
+
+            const response2 = await ClientAPI.post("getDepartment");
+            setDepartments(response2.data);
+        } catch (error) {
+            console.error("Error fetching Terms and Departments:", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchCourses();
+        fetchTermsAndDepartments();
+    }, [currentPage]);
 
     const paginate = pageNumber => {
-        if (pageNumber < 1 || pageNumber > Math.ceil(DUMMY_DATA.length / coursesPerPage)) {
+        if (pageNumber < 1 || pageNumber > Math.ceil(courses.length / coursesPerPage)) {
             return;
         }
         setCurrentPage(pageNumber);
     };
-
-    const [image, setImage] = useState('');
-    const [selectedSizes, setSelectedSizes] = useState([]);
-
-    const itemsPerPage = 10;
-    const [items, setItems] = useState(DUMMY_DATA);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const totalPages = Math.ceil(items.length / itemsPerPage);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -43,12 +65,52 @@ export const AdminCourses = () => {
         setIsModalOpen(false);
     };
 
-    const handleAddProduct = (event) => {
+    const handleAddCourses = async (event) => {
         event.preventDefault();
-        // Add logic to add a new product
-        // ...
+        try {
+            const file = event.target.elements.excelFile.files[0]; // Get the uploaded file
+            const terms = event.target.elements.terms.value; // Get the selected term
+            const departments = event.target.elements.departments.value; // Get the selected department
+            
+            // Create form data to send to the server
+            const formData = new FormData();
+            formData.append('terms', terms);
+            formData.append('departments', departments);
+            formData.append('excelFile', file);
+            
+            console.log("Data sent to server:", formData); // Log the data being sent to the server
+            
+            // Send the data to the server using ClientAPI
+            const response = await ClientAPI.post("addCourses", formData);
+            console.log("Response from server:", response); // Log the response from the server
+            
+            // If the response is successful, fetch updated courses
+            if (response && response.data) {
+                await fetchCourses();
+            } else {
+                console.error("Invalid response from server:", response);
+            }
+        } catch (error) {
+            console.error("Error adding Courses:", error);
+            console.log("Error details:", error.response?.data);
+        }
         closeModal();
-    };
+    };    
+
+    const removeCourses = async (event, coursesID) => {
+        event.preventDefault();
+        try {
+            const data = {
+                coursesID: coursesID,
+            }
+            await ClientAPI.post("deleteCourses", data);
+            alert("Deleted Courses Successfully");
+            await fetchCourses();
+        } catch (error) {
+            console.error("Error deleting Courses:", error);
+            alert("Error deleting Courses: " + error.message);
+        }
+    }
 
     useEffect(() => {
         const modalForm = document.getElementById("addModal");
@@ -61,10 +123,6 @@ export const AdminCourses = () => {
             }
         }
     }, [isModalOpen]);
-
-    const startIndex = (totalPages - currentPage) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedItems = items.slice(startIndex, endIndex);
 
     return (
         <section id="content" className='adminPage course'>
@@ -100,21 +158,21 @@ export const AdminCourses = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {paginatedItems.reverse().map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.id}</td>
-                                <td>{item.name}</td>
-                                <td>{item.name}</td>
-                                <td>{item.name}</td>
-                                <td>{item.name}</td>
-                                <td>{item.name}</td>
-                                <td>{item.name}</td>
+                        {currentCourses.map((courses) => (
+                            <tr key={courses.id}>
+                                <td>{courses.id}</td>
+                                <td>{courses.crn}</td>
+                                <td>{courses.prefix}</td>
+                                <td>{courses.number}</td>
+                                <td>{courses.professor}</td>
+                                <td>{courses.term}</td>
+                                <td>{courses.department}</td>
                                 <td>
-                                    <a class="edit" role="button" href={`adminUpdateCourses/${item.id}`}>
+                                    <a class="edit" role="button" href={`adminUpdateCourses/${courses.id}`}>
                                         Edit
                                     </a>
                                     <form method="post" action="">
-                                        <button class="delete" type="submit" name="deleteProduct" value={item.id}>
+                                        <button class="delete" onClick={(e) => removeCourses(e, courses.id)}>
                                             Delete
                                         </button>
                                     </form>
@@ -134,19 +192,18 @@ export const AdminCourses = () => {
                         <div id="popup-form" className="popup">
                             <h2 style={{ textAlign: 'center', color: 'var(--blue)' }}>Add Data</h2>
                             <br />
-                            <form onSubmit={handleAddProduct} encType="multipart/form-data">
-                                <label htmlFor="types">Select Terms:</label>
-                                <select id="types" name="types">
-                                    <option value="T-shirts">Spring 2023</option>
-                                    <option value="Jackets">Summer 2023</option>
-                                    <option value="Pants">Fall 2023</option>
-                                    <option value="Accessories">Winter 2023</option>
+                            <form onSubmit={handleAddCourses} encType="multipart/form-data">
+                                <label htmlFor="terms">Select Terms:</label>
+                                <select id="terms" name="terms">
+                                    {terms.map((term) => (
+                                        <option key={term.id} value={term.id}>{term.name}</option>
+                                    ))}
                                 </select><br />
-                                <label htmlFor="types">Select Departments:</label>
-                                <select id="types" name="types">
-                                    <option value="T-shirts">Computer Science</option>
-                                    <option value="Jackets">Business</option>
-                                    <option value="Pants">Economics</option>
+                                <label htmlFor="departments">Select Departments:</label>
+                                <select id="departments" name="departments">
+                                    {departments.map((department) => (
+                                        <option key={department.id} value={department.id}>{department.name}</option>
+                                    ))}
                                 </select><br />
 
 
@@ -159,6 +216,7 @@ export const AdminCourses = () => {
                                 <button type="submit" name="addProduct">
                                     Submit
                                 </button>
+
                             </form>
                         </div>
                     </div>
@@ -172,14 +230,14 @@ export const AdminCourses = () => {
                                     <span aria-hidden="true">«</span>
                                 </a>
                             </li>
-                            {[...Array(Math.ceil(DUMMY_DATA.length / coursesPerPage)).keys()].map((number, index) => (
+                            {[...Array(Math.ceil(courses.length / coursesPerPage)).keys()].map((number, index) => (
                                 <li key={index} className="page-item">
                                     <a onClick={() => paginate(number + 1)} href={`#${number + 1}`} className={`page-link ${currentPage === number + 1 ? 'active' : ''}`}>
                                         {number + 1}
                                     </a>
                                 </li>
                             ))}
-                            <li className={`page-item ${currentPage >= Math.ceil(DUMMY_DATA.length / coursesPerPage) ? 'disabled' : ''}`}>
+                            <li className={`page-item ${currentPage >= Math.ceil(courses.length / coursesPerPage) ? 'disabled' : ''}`}>
                                 <a className="page-link" href={`#${currentPage + 1}`} onClick={() => paginate(currentPage + 1)} aria-label="Next">
                                     <span aria-hidden="true">»</span>
                                 </a>

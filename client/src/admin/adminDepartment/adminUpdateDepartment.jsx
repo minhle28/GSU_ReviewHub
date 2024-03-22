@@ -10,9 +10,9 @@ import MySecurity from "../../api/mySecurity";
 
 export const AdminUpdateDepartment = () => {
     const { departmentID } = useParams();
-    const [departmentName, setDepartmentName] = useState('');
+    //const [departmentName, setDepartmentName] = useState('');
     const navigate = useNavigate();
-    const [departmentData, setDepartmentData] = useState(null);
+    //const [departmentData, setDepartmentData] = useState(null);
     const [inputValues, setInputValues] = useState({});
 
     useEffect(() => {
