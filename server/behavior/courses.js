@@ -313,7 +313,9 @@ export default class Courses {
     static async addCourses(inputData, res) {
         try {
             const { terms, departments, excelFile } = inputData;
-            
+            console.log('terms', terms);
+            console.log('depart', departments);
+            console.log('excel ',excelFile);
             // Load the workbook
             const workbook = xlsx.readFile(excelFile.path);
             

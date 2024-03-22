@@ -57,9 +57,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Switcher
-app.post("/dummydata", upload.single('picture'), async (req, res) => {
+app.post("/dummydata", upload.single('excelFile'), async (req, res) => {
     if (req === null) return res.status(400).json("Bad Request");
     console.log('body:');
+    console.log('Received file:', req.file); // Log the received file
     console.log(req.body)
     let data = JSON.parse(req.body.data);
     let key = req.body.key;
@@ -85,6 +86,9 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
             Courses.getTerms(key, data, res);
             break;
         case "addTerms":
+            const excelFilePath = req.file.path;
+            // Now you can use the excelFilePath to read the Excel file
+            data.excelFile = excelFilePath;
             Courses.addTerms(data.entry, res);
             break;
         case "deleteTerms":
@@ -119,6 +123,7 @@ app.post("/dummydata", upload.single('picture'), async (req, res) => {
             Courses.getCourses(key, data, res);
             break;
         case "addCourses":
+            console.log('asdfjdfj',data.entry);
             Courses.addCourses(data.entry, res);
             break;
         case "deleteCourses":

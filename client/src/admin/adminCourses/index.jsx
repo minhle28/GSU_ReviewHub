@@ -71,18 +71,23 @@ export const AdminCourses = () => {
             const file = event.target.elements.excelFile.files[0]; // Get the uploaded file
             const terms = event.target.elements.terms.value; // Get the selected term
             const departments = event.target.elements.departments.value; // Get the selected department
+    
+            // Create an object to send to the server
+            const data = {
+                terms: terms,
+                departments: departments,
+                excelFile: file
+            };
             
-            // Create form data to send to the server
-            const formData = new FormData();
-            formData.append('terms', terms);
-            formData.append('departments', departments);
-            formData.append('excelFile', file);
-            
-            console.log("Data sent to server:", formData); // Log the data being sent to the server
+            console.log('terms', terms);
+            console.log('departments', departments);
+            console.log('excelFile', file);
+    
+            console.log("Data sent to server:", data); 
             
             // Send the data to the server using ClientAPI
-            const response = await ClientAPI.post("addCourses", formData);
-            console.log("Response from server:", response); // Log the response from the server
+            const response = await ClientAPI.post("addCourses", data);
+            console.log("Response from server:", response); 
             
             // If the response is successful, fetch updated courses
             if (response && response.data) {
@@ -95,7 +100,8 @@ export const AdminCourses = () => {
             console.log("Error details:", error.response?.data);
         }
         closeModal();
-    };    
+    };
+      
 
     const removeCourses = async (event, coursesID) => {
         event.preventDefault();
