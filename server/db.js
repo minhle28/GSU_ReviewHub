@@ -4,8 +4,9 @@ import fs from "fs"
 const dbConfig = {
    /// host: "localhost",
     host: "127.0.0.1",
-    user: "taone",
-    password: "taothik",
+    user: "root",
+    //password: "taothik",
+    password: "new_password",
     database: "reviewhub"
 }
 

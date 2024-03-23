@@ -27,7 +27,7 @@ export default class Authentication {
         db.execute(`SELECT * FROM user WHERE email= '${entryData.email}'`, (err, data) => {
             if (err) return res.json(err);
             if (data.length === 0) return res.status(401).json("email or password is incorrect...");
-
+            console.log("RUn me");
             // check password       
             var isPasswordTrue = bcrypt.compareSync(entryData.password, data[0].password)
             if (!isPasswordTrue) return res.status(401).json("Unauthorized");
