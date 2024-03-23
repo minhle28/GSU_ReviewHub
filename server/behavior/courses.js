@@ -331,6 +331,9 @@ export default class Courses {
     
             // Loop through rows starting from the second row
             for (let i = startRow; sheet[`A${i}`]; i++) {
+                if (!sheet[`A${i}`] || !sheet[`B${i}`]|| !sheet[`C${i}`] ) {
+                    continue;
+                }
                 // Extract data from each row
                 const crn = sheet[`A${i}`].v;
                 const course = sheet[`B${i}`].v;
@@ -351,7 +354,7 @@ export default class Courses {
             }
     
             // Insert the extracted data into the database
-            const insertQuery = `INSERT INTO courses (crn, coursePrefix, courseNumber, professor, terms, departments) VALUES ?`;
+            const insertQuery = `INSERT INTO courses (CRN, coursePrefix, courseNumber, professor, termsID, departmentID) VALUES ?`;
             db.query(insertQuery, [coursesData.map(course => [course.crn, course.coursePrefix, course.courseNumber, course.professor, course.terms, course.departments])], (err, data) => {
                 if (err) {
                     console.error("Error inserting courses:", err);

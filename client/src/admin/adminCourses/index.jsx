@@ -5,6 +5,7 @@ import "./adminCourses.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import ClientAPI from "../../api/clientAPI";
+import CourseAPI from '../../api/courseAPI';
 
 export const AdminCourses = () => {
     const [courses, setCourses] = useState([]);
@@ -33,62 +34,112 @@ export const AdminCourses = () => {
         }
     }
 
+    // async function fetchTermsAndDepartments() {
+    //     try {
+    //         const response1 = await ClientAPI.post("getTerms");
+    //         setTerms(response1.data);
+
+    //         const response2 = await ClientAPI.post("getDepartment");
+    //         setDepartments(response2.data);
+    //     } catch (error) {
+    //         console.error("Error fetching Terms and Departments:", error);
+    //     }
+    // }
     async function fetchTermsAndDepartments() {
         try {
-            const response1 = await ClientAPI.post("getTerms");
+            const data = { limit: coursesPerPage, page: currentPage };
+            const response1 = await ClientAPI.post("getTerms", data);
             setTerms(response1.data);
-
-            const response2 = await ClientAPI.post("getDepartment");
+    
+            const response2 = await ClientAPI.post("getDepartment", data);
             setDepartments(response2.data);
         } catch (error) {
             console.error("Error fetching Terms and Departments:", error);
         }
     }
-
+    
     useEffect(() => {
         fetchCourses();
         fetchTermsAndDepartments();
     }, [currentPage]);
-
-    const paginate = pageNumber => {
+    
+    const paginate = async (pageNumber) => {
         if (pageNumber < 1 || pageNumber > Math.ceil(courses.length / coursesPerPage)) {
             return;
         }
         setCurrentPage(pageNumber);
+        await fetchTermsAndDepartments(); // Fetch terms and departments when page changes
     };
-
+    
     const openModal = () => {
         setIsModalOpen(true);
     };
-
+    
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
+    
+    // const handleAddCourses = async (event) => {
+    //     event.preventDefault();
+    //     try {
+    //         const file = event.target.elements.excelFile.files[0]; // Get the uploaded file
+    //         const terms = event.target.elements.terms.value; // Get the selected term
+    //         const departments = event.target.elements.departments.value; // Get the selected department
+    
+    //         // Create an object to send to the server
+    //         const data = {
+    //             terms: terms,
+    //             departments: departments,
+    //             excelFile: file
+    //         };
+            
+    //         console.log('terms', terms);
+    //         console.log('departments', departments);
+    //         console.log('excelFile', file);
+    
+    //         console.log("Data sent to server:", data); 
+            
+    //         // Send the data to the server using ClientAPI
+    //         const response = await ClientAPI.post("addCourses", data);
+    //         console.log("Response from server:", response); 
+            
+    //         // If the response is successful, fetch updated courses
+    //         if (response && response.data) {
+    //             await fetchCourses();
+    //         } else {
+    //             console.error("Invalid response from server:", response);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error adding Courses:", error);
+    //         console.log("Error details:", error.response?.data);
+    //     }
+    //     closeModal();
+    // };
     const handleAddCourses = async (event) => {
         event.preventDefault();
         try {
             const file = event.target.elements.excelFile.files[0]; // Get the uploaded file
+            console.log(file);
+            if (!file) {
+                alert("Please select an Excel file.");
+                return;
+            }
             const terms = event.target.elements.terms.value; // Get the selected term
             const departments = event.target.elements.departments.value; // Get the selected department
     
-            // Create an object to send to the server
-            const data = {
-                terms: terms,
-                departments: departments,
-                excelFile: file
-            };
-            
-            console.log('terms', terms);
-            console.log('departments', departments);
-            console.log('excelFile', file);
+            // Create a FormData object
+            const formData = new FormData();
+            formData.append('excelFile', file); // Append the file to FormData
+            formData.append('terms', terms); // Append terms to FormData
+            formData.append('departments', departments); // Append departments to FormData
     
-            console.log("Data sent to server:", data); 
-            
+            console.log("Data sent to server:", formData);
+    
             // Send the data to the server using ClientAPI
-            const response = await ClientAPI.post("addCourses", data);
-            console.log("Response from server:", response); 
-            
+            const response = await CourseAPI.addCourses(formData);
+             
+            console.log("Response from server:", response);
+    
             // If the response is successful, fetch updated courses
             if (response && response.data) {
                 await fetchCourses();
@@ -97,7 +148,7 @@ export const AdminCourses = () => {
             }
         } catch (error) {
             console.error("Error adding Courses:", error);
-            console.log("Error details:", error.response?.data);
+            //console.log("Error details:", error.response?.data);
         }
         closeModal();
     };

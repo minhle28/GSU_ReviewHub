@@ -15,8 +15,11 @@ export const Login = () => {
     const [user, setUser] = useState({
       email: "",
       password: "",
-    });  
+    }); 
+
+    // Higher Order Component
     useEffect(()=>{
+      // nvquang2
       if (Cookies.get("userID") !== undefined)
         navigate("/");
     })
