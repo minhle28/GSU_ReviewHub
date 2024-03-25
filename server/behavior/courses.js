@@ -331,6 +331,9 @@ export default class Courses {
     
             // Loop through rows starting from the second row
             for (let i = startRow; sheet[`A${i}`]; i++) {
+                if (!sheet[`A${i}`] || !sheet[`B${i}`]|| !sheet[`C${i}`] ) {
+                    continue;
+                }
                 // Extract data from each row
                 const crn = sheet[`A${i}`].v;
                 const course = sheet[`B${i}`].v;
@@ -351,7 +354,8 @@ export default class Courses {
             }
     
             // Insert the extracted data into the database
-            const insertQuery = `INSERT INTO courses (crn, coursePrefix, courseNumber, professor, terms, departments) VALUES ?`;
+            //const insertQuery = `INSERT INTO courses (crn, coursePrefix, courseNumber, professor, terms, departments) VALUES ?`;
+            const insertQuery = `INSERT INTO courses (CRN, coursePrefix, courseNumber, professor, termsID, departmentID) VALUES ?`;
             db.query(insertQuery, [coursesData.map(course => [course.crn, course.coursePrefix, course.courseNumber, course.professor, course.terms, course.departments])], (err, data) => {
                 if (err) {
                     console.error("Error inserting courses:", err);
@@ -443,4 +447,49 @@ export default class Courses {
             return res.status(500).json("Failed to get courses detail. " + error);
         }
     }
+
+    
+    /*---------------------------COURSES------------------------------ */
+    static async getCoursePrefix(key, res) {
+        try {
+            db.execute(`
+                SELECT DISTINCT coursePrefix
+                FROM courses
+                ORDER BY coursePrefix ASC`, (err, data) => {
+                if (err) return res.status(500).json(err);
+    
+                const coursePrefixes = data.map((course, index) => ({
+                    id: index + 1, // You can use index + 1 as a simple unique identifier
+                    name: course.coursePrefix
+                }));
+    
+                const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), coursePrefixes);
+                return res.status(200).json(encryptedData);
+            });
+        } catch (error) {
+            return res.status(500).json("Failed to get course prefixes. " + error);
+        }
+    }
+    
+    static async getCourseNumber(key, res) {
+        try {
+            db.execute(`
+                SELECT DISTINCT courseNumber
+                FROM courses
+                ORDER BY courseNumber ASC`, (err, data) => {
+                if (err) return res.status(500).json(err);
+    
+                const courseNumber = data.map((course, index) => ({
+                    id: index + 1, // You can use index + 1 as a simple unique identifier
+                    coursenumber: parseInt(course.courseNumber)
+                }));
+    
+                const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), courseNumber);
+                return res.status(200).json(encryptedData);
+            });
+        } catch (error) {
+            return res.status(500).json("Failed to get course number. " + error);
+        }
+    }
+    
 }

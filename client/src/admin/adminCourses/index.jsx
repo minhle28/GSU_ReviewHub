@@ -5,17 +5,41 @@ import "./adminCourses.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import ClientAPI from "../../api/clientAPI";
+import CourseAPI from '../../api/courseAPI.js';
 
 export const AdminCourses = () => {
     const [courses, setCourses] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const coursesPerPage = 10;
+    const coursesPerPage = 20;
     const indexOfLastCourses = currentPage * coursesPerPage;
     const indexOfFirstCourses = indexOfLastCourses - coursesPerPage;
     const currentCourses = courses.slice(indexOfFirstCourses, indexOfLastCourses);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [terms, setTerms] = useState([]);
     const [departments, setDepartments] = useState([]);
+    const [visiblePages, setVisiblePages] = useState([]);
+
+    // Function to calculate the range of visible page numbers
+    const calculateVisiblePages = (currentPage, totalPages) => {
+        const range = 2; // Number of pages to show before and after the current page
+        let start = Math.max(1, currentPage - range);
+        let end = Math.min(totalPages, currentPage + range);
+
+        // Adjust the range if the current page is near the start or end
+        if (currentPage - range <= 1) {
+            end = 1 + 2 * range;
+        }
+        if (currentPage + range >= totalPages) {
+            start = totalPages - 2 * range;
+        }
+
+        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    };
+
+    // Update visible pages whenever currentPage changes
+    useEffect(() => {
+        setVisiblePages(calculateVisiblePages(currentPage, Math.ceil(courses.length / coursesPerPage)));
+    }, [currentPage, courses.length]);
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -35,10 +59,12 @@ export const AdminCourses = () => {
 
     async function fetchTermsAndDepartments() {
         try {
-            const response1 = await ClientAPI.post("getTerms");
+            const data = { limit: coursesPerPage, page: currentPage };
+
+            const response1 = await ClientAPI.post("getTerms", data);
             setTerms(response1.data);
 
-            const response2 = await ClientAPI.post("getDepartment");
+            const response2 = await ClientAPI.post("getDepartment", data);
             setDepartments(response2.data);
         } catch (error) {
             console.error("Error fetching Terms and Departments:", error);
@@ -50,11 +76,12 @@ export const AdminCourses = () => {
         fetchTermsAndDepartments();
     }, [currentPage]);
 
-    const paginate = pageNumber => {
+    const paginate = async (pageNumber) => {
         if (pageNumber < 1 || pageNumber > Math.ceil(courses.length / coursesPerPage)) {
             return;
         }
         setCurrentPage(pageNumber);
+        await fetchTermsAndDepartments();
     };
 
     const openModal = () => {
@@ -65,30 +92,65 @@ export const AdminCourses = () => {
         setIsModalOpen(false);
     };
 
+    /*            
+    const handleAddCourses = async (event) => {
+                event.preventDefault();
+                try {
+                    const formData = new FormData();
+                    
+                    const file = event.target.elements.excelFile.files[0]; // Get the uploaded file
+                    const terms = event.target.elements.terms.value; // Get the selected term
+                    const departments = event.target.elements.departments.value; // Get the selected department
+                    
+                    formData.append('terms', terms);
+                    formData.append('departments', departments);
+                    formData.append('excelFile', file);
+                    
+                    console.log('terms', terms);
+                    console.log('departments', departments);
+                    console.log('excelFile', file);
+                    
+                    console.log("Data sent to server:", formData);
+                    
+                    const response = await ClientAPI.post("addCourses", formData);
+                    console.log("Response from server:", response);
+                    
+                    // If the response is successful, fetch updated courses
+                    if (response && response.data) {
+                        await fetchCourses();
+                    } else {
+                        console.error("Invalid response from server:", response);
+                    }
+                } catch (error) {
+                    console.error("Error adding Courses:", error);
+                    console.log("Error details:", error.response?.data);
+                }
+                closeModal();
+            }; 
+            */
     const handleAddCourses = async (event) => {
         event.preventDefault();
         try {
             const file = event.target.elements.excelFile.files[0]; // Get the uploaded file
+            console.log(file);
+            if (!file) {
+                alert("Please select an Excel file.");
+                return;
+            }
             const terms = event.target.elements.terms.value; // Get the selected term
             const departments = event.target.elements.departments.value; // Get the selected department
-    
-            // Create an object to send to the server
-            const data = {
-                terms: terms,
-                departments: departments,
-                excelFile: file
-            };
-            
-            console.log('terms', terms);
-            console.log('departments', departments);
-            console.log('excelFile', file);
-    
-            console.log("Data sent to server:", data); 
-            
-            // Send the data to the server using ClientAPI
-            const response = await ClientAPI.post("addCourses", data);
-            console.log("Response from server:", response); 
-            
+
+            // Create a FormData object
+            const formData = new FormData();
+            formData.append('excelFile', file); // Append the file to FormData
+            formData.append('terms', terms); // Append terms to FormData
+            formData.append('departments', departments); // Append departments to FormData
+
+            console.log("Data sent to server:", formData);
+
+            const response = await CourseAPI.addCourses(formData);
+            console.log("Response from server:", response);
+
             // If the response is successful, fetch updated courses
             if (response && response.data) {
                 await fetchCourses();
@@ -101,7 +163,7 @@ export const AdminCourses = () => {
         }
         closeModal();
     };
-      
+
 
     const removeCourses = async (event, coursesID) => {
         event.preventDefault();
@@ -236,10 +298,10 @@ export const AdminCourses = () => {
                                     <span aria-hidden="true">«</span>
                                 </a>
                             </li>
-                            {[...Array(Math.ceil(courses.length / coursesPerPage)).keys()].map((number, index) => (
-                                <li key={index} className="page-item">
-                                    <a onClick={() => paginate(number + 1)} href={`#${number + 1}`} className={`page-link ${currentPage === number + 1 ? 'active' : ''}`}>
-                                        {number + 1}
+                            {visiblePages.map((number) => (
+                                <li key={number} className="page-item">
+                                    <a onClick={() => paginate(number)} href={`#${number}`} className={`page-link ${currentPage === number ? 'active' : ''}`}>
+                                        {number}
                                     </a>
                                 </li>
                             ))}

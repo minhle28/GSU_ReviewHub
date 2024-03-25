@@ -38,7 +38,6 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            path: "",
             element: <Home />,
           },
           {
@@ -68,7 +67,7 @@ const router = createBrowserRouter([
             element: <CoursesDetails />,
           },
           {
-            path: "edit-comment/:coursesId",
+            path: "edit-comment/:reviewId",
             element: <EditComment />,
         },        
         ],

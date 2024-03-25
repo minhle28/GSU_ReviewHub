@@ -1,14 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./course_sidebar.css";
 import { Courses } from "../../pages/courses/";
 import { CoursesDetails } from "../../pages/courses-details/";
+import ClientAPI from "../../api/clientAPI";
 
 export const CourseSidebar = () => {
     const [selectedTerm, setSelectedTerm] = useState("All");
     const [selectedDepartment, setSelectedDepartment] = useState("All Departments");
     const [selectedPrefix, setSelectedPrefix] = useState("All");
     const [selectedCourseNumber, setSelectedCourseNumber] = useState("All");
+
+    // State to hold fetched course data
+    const [terms, setTerms] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [prefix, setPrefix] = useState([]);
+    const [number, setNumber] = useState([]);
+
+    useEffect(() => {
+        // Fetch courses data when the component mounts
+        fetchTerms();
+        fetchDepartments();
+        fetchPrefix();
+        fetchNumber();
+    }, []);
+
+    // Function to fetch data from the server
+    const fetchTerms = async () => {
+        try {
+            const response = await ClientAPI.post("getTerms", {});
+            if (response && response.data) {
+                setTerms(response.data);
+            }
+        } catch (error) {
+            console.error("Error fetching terms:", error);
+        }
+    };
+
+    // Function to fetch departments from the server
+    const fetchDepartments = async () => {
+        try {
+            const response = await ClientAPI.post("getDepartment", {});
+            if (response && response.data) {
+                setDepartments(response.data);
+            }
+        } catch (error) {
+            console.error("Error fetching departments:", error);
+        }
+    };
+
+    const fetchPrefix = async () => {
+        try {
+            const response = await ClientAPI.post("getCoursePrefix", {});
+            if (response && response.data) {
+                setPrefix(response.data);
+            }
+        } catch (error) {
+            console.error("Error fetching prefix:", error);
+        }
+    };
+
+    const fetchNumber = async () => {
+        try {
+            const response = await ClientAPI.post("getCourseNumber", {});
+            if (response && response.data) {
+                setNumber(response.data);
+            }
+        } catch (error) {
+            console.error("Error fetching course number:", error);
+        }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -32,7 +93,7 @@ export const CourseSidebar = () => {
                     <form onSubmit={handleSubmit} onReset={handleReset}>
                         <ul className="menu-courses-list">
                             <li>
-                                <label for="select-term">Select Term:</label>
+                                <label htmlFor="select-term">Select Term:</label>
                                 <select
                                     id="select-term"
                                     className="form-select form-select-sm"
@@ -41,11 +102,15 @@ export const CourseSidebar = () => {
                                     onChange={(e) => setSelectedTerm(e.target.value)}
                                 >
                                     <option value="All">All</option>
-                                    <option value="FA2023">FA 2023</option>
+                                    {terms.map((term) => (
+                                        <option key={term.id} value={term.name}>
+                                            {term.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </li>
                             <li>
-                                <label for="select-department">Select Department:</label>
+                                <label htmlFor="select-department">Select Department:</label>
                                 <select
                                     id="select-department"
                                     className="form-select form-select-sm"
@@ -54,11 +119,15 @@ export const CourseSidebar = () => {
                                     onChange={(e) => setSelectedDepartment(e.target.value)}
                                 >
                                     <option value="All Departments">All Departments</option>
-                                    <option value="Computer Science">Computer Science</option>
+                                    {departments.map((department) => (
+                                        <option key={department.id} value={department.name}>
+                                            {department.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </li>
                             <li>
-                                <label for="select-prefix">Select Prefix:</label>
+                                <label htmlFor="select-prefix">Select Prefix:</label>
                                 <select
                                     id="select-prefix"
                                     className="form-select form-select-sm"
@@ -67,11 +136,15 @@ export const CourseSidebar = () => {
                                     onChange={(e) => setSelectedPrefix(e.target.value)}
                                 >
                                     <option value="All">All</option>
-                                    <option value="CSC">CSC</option>
+                                    {prefix.map((prefix) => (
+                                        <option key={prefix.id} value={prefix.name}>
+                                            {prefix.name}
+                                        </option>
+                                    ))}
                                 </select>
                             </li>
                             <li>
-                                <label for="course-number">Select Course Number:</label>
+                                <label htmlFor="course-number">Select Course Number:</label>
                                 <select
                                     id="course-number"
                                     className="form-select form-select-sm"
@@ -80,15 +153,21 @@ export const CourseSidebar = () => {
                                     onChange={(e) => setSelectedCourseNumber(e.target.value)}
                                 >
                                     <option value="All">All</option>
-                                    <option value="4350">4350</option>
-                                    <option value="4311">4311</option>
-                                    <option value="1301">1301</option>
+                                    {number.map((number) => (
+                                        <option key={number.id} value={number.coursenumber}>
+                                            {number.coursenumber}
+                                        </option>
+                                    ))}
                                 </select>
                             </li>
                         </ul>
                         <div className="form-buttons">
-                            <button type="submit" className="submit-button">Run</button>
-                            <button type="reset" className="reset-button">Reset</button>
+                            <button type="submit" className="submit-button">
+                                Run
+                            </button>
+                            <button type="reset" className="reset-button">
+                                Reset
+                            </button>
                         </div>
                     </form>
                 </div>

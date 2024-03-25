@@ -3,12 +3,12 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import './courses-details.css';
 
 export const EditComment = () => {
-    const { courseId } = useParams(); // Get the courseId from URL params
+    const { coursesId } = useParams(); // Get the courseId from URL params
     const navigate = useNavigate();
 
     const handleCancelEdit = (event) => {
         event.preventDefault();
-        navigate(`/courses-details/${courseId}`);
+        navigate(`/courses-details/${coursesId}`);
     };
 
     const handleEditProduct = (event) => {
@@ -20,7 +20,7 @@ export const EditComment = () => {
     return (
         <div className='updateComment'>
             <div className='sub-header-course-detail'>
-                <Link to={`/courses-details/${courseId}`}>
+                <Link to={`/courses-details/${coursesId}`}>
                     <i className="fa-solid fa-arrow-left"></i>
                 </Link>
                 <h5>Edit Your Review</h5>

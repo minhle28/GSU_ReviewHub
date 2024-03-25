@@ -10,6 +10,8 @@ import { dirname } from 'path';
 import path from "path";
 import Authentication from "./behavior/authentication.js";
 import Courses from "./behavior/courses.js";
+import Review from "./behavior/review.js";
+
 //import { Courses } from "../client/src/pages/courses/index.jsx";
 // Server port
 var app = express()
@@ -19,6 +21,13 @@ app.use(express.json())
 app.use(cookieParser())
 // Allow CORS
 app.use(cors());
+
+// Add Permission-Policy header
+app.use((req, res, next) => {
+    res.set('Permission-Policy', 'unload()');
+    next();
+});
+
 // check database
 checkDatabase();
 
@@ -47,16 +56,25 @@ const getImageData = (folder, imageName) => {
 // get image from clients
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'images/'); // Set your destination folder
+        //cb(null, 'images/'); // Set your destination folder
+        cb(null, './images/'); // Set your destination folder
     },
     filename: function (req, file, cb) {
         const list = file.originalname.split('.');
         cb(null, `${Date.now()}.${list[list.length - 1]}`); // Set your filename logic
     },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // Switcher
+app.post("/upload", upload.single('excelFile'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+    }
+    const inputData = { ...req.body, excelFile: req.file };
+    Courses.addCourses(inputData, res);
+})
+
 app.post("/dummydata", upload.single('excelFile'), async (req, res) => {
     if (req === null) return res.status(400).json("Bad Request");
     console.log('body:');
@@ -123,7 +141,7 @@ app.post("/dummydata", upload.single('excelFile'), async (req, res) => {
             Courses.getCourses(key, data, res);
             break;
         case "addCourses":
-            console.log('asdfjdfj',data.entry);
+            console.log('asdfjdfj', data.entry);
             Courses.addCourses(data.entry, res);
             break;
         case "deleteCourses":
@@ -135,7 +153,24 @@ app.post("/dummydata", upload.single('excelFile'), async (req, res) => {
         case "getCoursesDetail":
             Courses.getCoursesDetail(key, data.entry, res);
             break;
-            
+        case "getCoursePrefix":
+            Courses.getCoursePrefix(data.entry, res);
+            break;
+        case "getCourseNumber":
+            Courses.getCourseNumber(data.entry, res);
+            break;
+
+        //review
+        case "getComments":
+            Review.getComments(key, data.entry, res);
+            break;
+        case "addComments":
+            Review.addComments(data.entry, res);
+            break;
+        case "deleteComments":
+            Review.deleteComments(data.entry, res);
+            break;
+
         default:
             res.status(400).json("Bad Request");
             break;
