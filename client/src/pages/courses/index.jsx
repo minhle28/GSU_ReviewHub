@@ -3,12 +3,15 @@ import './courses.css';
 import { Search } from "../../component/search/";
 import { Link } from 'react-router-dom';
 import ClientAPI from "../../api/clientAPI";
+import Cookies from 'js-cookie';
 
-export const Courses = () => {
+export const Courses = ({ onFilter, filtedData }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [courses, setCourses] = useState([]);
-    const [visiblePages, setVisiblePages] = useState([]);
+    //const [visiblePages, setVisiblePages] = useState([]);
+    // setting next button
+
 
     useEffect(() => {
         // Fetch courses from the backend
@@ -23,37 +26,17 @@ export const Courses = () => {
                 console.error('Error fetching courses:', error);
             }
         }
-        fetchCourses();
-    }, []);
-
-    const handleSearch = event => {
-        setCurrentPage(1);
-        setSearchTerm(event.target.value);
-    };
-
-    const filteredCourses = courses.filter(course => {
-        return (
-            String(course.crn).includes(searchTerm.toLowerCase()) ||
-            course.professor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            course.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            course.prefix.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            String(course.number).includes(searchTerm.toLowerCase())
-        );
-    });
-
-
-    const coursesPerPage = 30;
-    const indexOfLastCourse = currentPage * coursesPerPage;
-    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-    const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
-
-    const paginate = pageNumber => {
-        const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
-        if (pageNumber < 1 || pageNumber > totalPages) {
-            return;
+        if (filtedData && onFilter === 1) {
+            console.log("FrontL:", filtedData)
+            setCourses(filtedData)
+        } else {
+            console.log("FrontL fetch")
+            fetchCourses();
         }
-        setCurrentPage(pageNumber);
-    };
+        setCurrentPage(1);
+    }, [filtedData]);
+    let coursesPerPage = 30;
+
 
     // Function to calculate the range of visible page numbers
     const calculateVisiblePages = (currentPage, totalPages) => {
@@ -68,15 +51,53 @@ export const Courses = () => {
         if (currentPage + range >= totalPages) {
             start = Math.max(1, totalPages - 2 * range);
         }
-
-        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+        let result = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+        return result.length === 0 ? [1] : result;
     };
+
+    let searchingCourses = courses.filter(course => {
+        const searchTermWithoutSpaces = searchTerm.toLowerCase().replace(/\s/g, '');
+        const courseNumberLowerCase = String(course.number).toLowerCase();
+        const prefixLowerCase = course.prefix.toLowerCase().replace(/\s/g, '');
+        const courseIdentifier = `${prefixLowerCase}${courseNumberLowerCase}`;
+
+        const courseIdentifierMatches = courseIdentifier.includes(searchTermWithoutSpaces);
+        const courseNumberMatches = courseNumberLowerCase.includes(searchTermWithoutSpaces);
+        const prefixMatches = prefixLowerCase.includes(searchTermWithoutSpaces);
+        const professorMatches = course.professor.toLowerCase().includes(searchTermWithoutSpaces);
+        const termMatches = course.term.toLowerCase().includes(searchTermWithoutSpaces);
+        const crnMatches = String(course.crn).includes(searchTermWithoutSpaces);
+        return courseIdentifierMatches || courseNumberMatches || prefixMatches || professorMatches || termMatches || crnMatches;
+    });
+    let indexOfLastCourse = currentPage * coursesPerPage;
+    let indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+    let showingCourses = searchingCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+    let totalPages = Math.ceil(searchingCourses.length / coursesPerPage);
+    let visiblePages = calculateVisiblePages(currentPage, totalPages);
+
+    //setVisiblePages(calculateVisiblePages(currentPage, totalPages)); 
 
     // Update visible pages whenever currentPage or filteredCourses change
     useEffect(() => {
-        const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
-        setVisiblePages(calculateVisiblePages(currentPage, totalPages));
-    }, [currentPage, filteredCourses, coursesPerPage]);
+        totalPages = Math.ceil(searchingCourses.length / coursesPerPage);
+        visiblePages = calculateVisiblePages(currentPage, totalPages);
+    }, [currentPage]);
+
+    const handleSearch = event => {
+        setCurrentPage(1);
+        setSearchTerm(event.target.value);
+    };
+
+    const paginate = pageNumber => {
+        const totalPages = Math.ceil(searchingCourses.length / coursesPerPage);
+        if (pageNumber < 1 || pageNumber > totalPages) {
+            setCurrentPage(1);
+            console.log("page bumber:" + pageNumber);
+            return;
+        }
+        setCurrentPage(pageNumber);
+    };
+
 
 
     return (
@@ -84,24 +105,27 @@ export const Courses = () => {
             <Search handleSearch={handleSearch} />
             <div className='all_course_list'>
                 <div className='course_list_center'>
-                    {currentCourses.map((course, index) => (
-                        <Link to={`/courses-details/${course.id}`} style={{ textDecoration: 'none' }} key={index}>
-                            <div className="card">
-                                <div className="card-header">
-                                    <b>
-                                        {course.prefix} {course.number} / {course.professor} / {course.term}
-                                    </b>
+                    {showingCourses.length > 0 ? (
+                        showingCourses.map((course, index) => (
+                            <Link to={`/courses-details/${course.id}`} style={{ textDecoration: 'none' }} key={index}>
+                                <div className="card">
+                                    <div className="card-header">
+                                        <b>
+                                            {course.prefix} {course.number} / {course.professor} / {course.term}
+                                        </b>
+                                    </div>
+                                    <div className="card-body">
+                                        <blockquote className="blockquote mb-0">
+                                            <p><b>CRN:</b> {course.crn}</p>
+                                            <p><b>Description:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                        </blockquote>
+                                    </div>
                                 </div>
-                                <div className="card-body">
-                                    <blockquote className="blockquote mb-0">
-                                        <p><b>CRN:</b> {course.crn}</p>
-
-                                        <p><b>Description:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    </blockquote>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
+                            </Link>
+                        ))
+                    ) : (
+                        <div>No courses found.</div>
+                    )}
                 </div>
             </div>
 
@@ -109,19 +133,19 @@ export const Courses = () => {
                 <nav aria-label="Page navigation example">
                     <ul className="pagination">
                         <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
-                            <a className="page-link" href={`#${currentPage - 1}`} onClick={() => paginate(currentPage - 1)} aria-label="Previous">
+                            <a className="page-link" onClick={() => paginate(currentPage - 1)} aria-label="Previous">
                                 <span aria-hidden="true">«</span>
                             </a>
                         </li>
                         {visiblePages.map((number) => (
                             <li key={number} className="page-item">
-                                <a onClick={() => paginate(number)} href={`#${number}`} className={`page-link ${currentPage === number ? 'active' : ''}`}>
+                                <a onClick={() => paginate(number)} className={`page-link ${currentPage === number ? 'active' : ''}`}>
                                     {number}
                                 </a>
                             </li>
                         ))}
-                        <li className={`page-item ${currentPage >= Math.ceil(filteredCourses.length / coursesPerPage) ? 'disabled' : ''}`}>
-                            <a className="page-link" href={`#${currentPage + 1}`} onClick={() => paginate(currentPage + 1)} aria-label="Next">
+                        <li className={`page-item ${currentPage >= totalPages ? 'disabled' : ''}`}>
+                            <a className="page-link" onClick={() => paginate(currentPage + 1)} aria-label="Next">
                                 <span aria-hidden="true">»</span>
                             </a>
                         </li>

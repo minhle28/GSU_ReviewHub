@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "./course_sidebar.css";
 import { Courses } from "../../pages/courses/";
 import { CoursesDetails } from "../../pages/courses-details/";
 import ClientAPI from "../../api/clientAPI";
+import Cookies from "js-cookie";
 
 export const CourseSidebar = () => {
-    const [selectedTerm, setSelectedTerm] = useState("All");
-    const [selectedDepartment, setSelectedDepartment] = useState("All Departments");
+    const [selectedTerm, setSelectedTerm] = useState({ id: "All", name: "All" });
+    const [selectedDepartment, setSelectedDepartment] = useState({ id: "All", name: "All Departments" });
     const [selectedPrefix, setSelectedPrefix] = useState("All");
     const [selectedCourseNumber, setSelectedCourseNumber] = useState("All");
 
@@ -16,6 +17,8 @@ export const CourseSidebar = () => {
     const [departments, setDepartments] = useState([]);
     const [prefix, setPrefix] = useState([]);
     const [number, setNumber] = useState([]);
+    const [filtedData, setFiltedData] = useState([]);
+    const [onFilter, setOnFilter] = useState([0]);
 
     useEffect(() => {
         // Fetch courses data when the component mounts
@@ -71,15 +74,31 @@ export const CourseSidebar = () => {
         }
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Handle form submission here
-        // You can access selectedTerm, selectedDepartment, selectedPrefix, selectedCourseNumber here
+    // Frontend (CourseSidebar.js)
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const filters = {
+            termsID: selectedTerm.id,
+            departmentID: selectedDepartment.id,
+            coursePrefix: selectedPrefix,
+            courseNumber: parseInt(selectedCourseNumber)
+        };
+        try {
+            // Send filter data to backend
+            const response = await ClientAPI.post('filterCourses', filters);
+            // Call parent component function to update courses state
+            setFiltedData(response.data); // Assuming the response contains filtered courses  
+            setOnFilter(1);
+        } catch (error) {
+            console.error('Error filtering courses:', error);
+        }
     };
 
+    useEffect(() => { }, [filtedData]);
+
     const handleReset = () => {
-        setSelectedTerm("All");
-        setSelectedDepartment("All Departments");
+        setSelectedTerm({ id: "All", name: "All" });
+        setSelectedDepartment({ id: "All", name: "All Departments" });
         setSelectedPrefix("All");
         setSelectedCourseNumber("All");
     };
@@ -98,8 +117,8 @@ export const CourseSidebar = () => {
                                     id="select-term"
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
-                                    value={selectedTerm}
-                                    onChange={(e) => setSelectedTerm(e.target.value)}
+                                    value={selectedTerm.name}
+                                    onChange={(e) => setSelectedTerm(terms.find(term => term.name === e.target.value))}
                                 >
                                     <option value="All">All</option>
                                     {terms.map((term) => (
@@ -115,8 +134,8 @@ export const CourseSidebar = () => {
                                     id="select-department"
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
-                                    value={selectedDepartment}
-                                    onChange={(e) => setSelectedDepartment(e.target.value)}
+                                    value={selectedDepartment.name}
+                                    onChange={(e) => setSelectedDepartment(departments.find(department => department.name === e.target.value))}
                                 >
                                     <option value="All Departments">All Departments</option>
                                     {departments.map((department) => (
@@ -165,16 +184,17 @@ export const CourseSidebar = () => {
                             <button type="submit" className="submit-button">
                                 Run
                             </button>
-                            <button type="reset" className="reset-button">
+                            <button type="reset" className="reset-button" onClick={() => {
+                                window.location.reload();
+                            }}>
                                 Reset
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
-            <Courses>
-                <CoursesDetails />
-            </Courses>
+            <Courses onFilter={onFilter} filtedData={filtedData} />
+
         </div>
     );
 };

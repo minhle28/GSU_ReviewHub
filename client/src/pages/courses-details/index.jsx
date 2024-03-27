@@ -131,13 +131,13 @@ export const CoursesDetails = () => {
                                                             <div className='d-flex flex-row user-info'>
                                                                 <img className="rounded-circle" src="/user_icon.png" alt='avatar' width="38px" height="38px" />
                                                                 <div className="d-flex flex-column justify-content-start ml-2">
-                                                                    <span className="d-block font-weight-bold name">{comment.userFullName}</span>
+                                                                    <span className={`d-block font-weight-bold ${Cookies.get("userID") == comment.userID ? 'colorUserNameGreen' : 'colorUserNameBlue'}`}>{comment.userFullName}</span>
                                                                     <span className="date text-black-50">Created: {new Date(comment.reviewDate).toLocaleString()}</span>
                                                                 </div>
                                                             </div>
                                                             {Cookies.get("userID") == comment.userID && (
                                                                 <div className='action-button'>
-                                                                    <Link to={`/edit-comment/${comment.id}`}>
+                                                                    <Link to={`/edit-comment/${comment.id}?coursesId=${coursesId}&userId=${comment.userID}`}>
                                                                         <img className="edit-icon-button" src="/edit_icon.png" alt='edit' width="20" />
                                                                     </Link>
                                                                     <form method="post" action="">

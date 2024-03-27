@@ -19,33 +19,55 @@ export const AdminCourses = () => {
     const [departments, setDepartments] = useState([]);
     const [visiblePages, setVisiblePages] = useState([]);
 
-    // Function to calculate the range of visible page numbers
-    const calculateVisiblePages = (currentPage, totalPages) => {
-        const range = 2; // Number of pages to show before and after the current page
-        let start = Math.max(1, currentPage - range);
-        let end = Math.min(totalPages, currentPage + range);
-
-        // Adjust the range if the current page is near the start or end
-        if (currentPage - range <= 1) {
-            end = 1 + 2 * range;
-        }
-        if (currentPage + range >= totalPages) {
-            start = totalPages - 2 * range;
-        }
-
-        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-    };
-
-    // Update visible pages whenever currentPage changes
-    useEffect(() => {
-        setVisiblePages(calculateVisiblePages(currentPage, Math.ceil(courses.length / coursesPerPage)));
-    }, [currentPage, courses.length]);
-
     const navigate = useNavigate();
     useEffect(() => {
         if (Cookies.get("isAdmin") !== '1')
             navigate("/");
     }, []);
+
+    
+
+    useEffect(() => {
+        async function fetchCourses() {
+            try {
+                const data = { limit: coursesPerPage, page: currentPage };
+                const response = await ClientAPI.post("getCourses", data);
+                setCourses(response.data);
+            } catch (error) {
+                console.error("Error fetching Courses:", error);
+            }
+        }
+
+        fetchCourses();
+    }, [currentPage]);
+
+    const paginate = pageNumber => {
+        const totalPages = Math.ceil(courses.length / coursesPerPage);
+        if (pageNumber < 1 || pageNumber > totalPages) {
+            return;
+        }
+        setCurrentPage(pageNumber);
+    };
+
+    const calculateVisiblePages = (currentPage, totalPages) => {
+        const range = 2; // Number of pages to show before and after the current page
+        let start = Math.max(1, currentPage - range);
+        let end = Math.min(totalPages, currentPage + range);
+
+        if (currentPage - range <= 1) {
+            end = Math.min(totalPages, 1 + 2 * range);
+        }
+        if (currentPage + range >= totalPages) {
+            start = Math.max(1, totalPages - 2 * range);
+        }
+
+        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    };
+
+    useEffect(() => {
+        const totalPages = Math.ceil(courses.length / coursesPerPage);
+        setVisiblePages(calculateVisiblePages(currentPage, totalPages));
+    }, [currentPage, courses]);
 
     async function fetchCourses() {
         try {
@@ -75,14 +97,6 @@ export const AdminCourses = () => {
         fetchCourses();
         fetchTermsAndDepartments();
     }, [currentPage]);
-
-    const paginate = async (pageNumber) => {
-        if (pageNumber < 1 || pageNumber > Math.ceil(courses.length / coursesPerPage)) {
-            return;
-        }
-        setCurrentPage(pageNumber);
-        await fetchTermsAndDepartments();
-    };
 
     const openModal = () => {
         setIsModalOpen(true);

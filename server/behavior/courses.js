@@ -18,50 +18,6 @@ export default class Courses {
                 const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), terms);
                 return res.status(200).json(encryptedData);
             });
-            /*
-            let output ={
-                termTable : [],
-                departmentTable: [],
-            }
-
-            //course decsiption insecrt new course
-            // insert course
-            // course -> c_dectiption foregin key = course ACCT1010
-
-            // read excel -> formation ojject -> .map(item elem => insert ques to sql)
-
-            // C_descript
-            // ACCT 10123 descript (2 cot dau, primary key)
-
-            // course
-            // CRN ACCT 1023 professs
-
-            // unique select ACCT, number from course group by ACCT
-
-            // data.fliter( where acct = actt)
-
-            // query 1 list term
-            db.execute(`SELECT * FROM terms`, (err, data) => {
-                if (err) return res.status(500).json(err);
-
-                output.termTable =  data.map(term => ({
-                    id: term.termsID,
-                    name: term.type
-                }));                
-            });
-            // query 2 list department
-            db.execute(`SELECT * FROM department` , (err, data) => {
-                if (err) return res.status(500).json(err);
-
-                output.departmentTable = data.map(term => ({
-                    id: term.termsID,
-                    name: term.type
-                }));
-                
-            });
-            const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), output);
-                return res.status(200).json(encryptedData);
-                */
         }
         catch (error) {
             return res.status(500).json("Failed to get terms. " + error);
@@ -295,7 +251,6 @@ export default class Courses {
                     term: course.term_type,
                     department: course.department_type
                 }));
-
                 const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), courses);
                 return res.status(200).json(encryptedData);
             });
@@ -307,41 +262,38 @@ export default class Courses {
 
 
     xlsx = require('xlsx');
-
-    // Assuming db is your database connection
-    
     static async addCourses(inputData, res) {
         try {
             const { terms, departments, excelFile } = inputData;
             console.log('terms', terms);
             console.log('depart', departments);
-            console.log('excel ',excelFile);
+            console.log('excel ', excelFile);
             // Load the workbook
             const workbook = xlsx.readFile(excelFile.path);
-            
+
             // Assuming the first sheet is the relevant one
             const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    
+
             // Array to hold the courses data
             const coursesData = [];
-            
+
             // Assuming the first row contains headers
             // Adjust row number if necessary
             const startRow = 2;
-    
+
             // Loop through rows starting from the second row
             for (let i = startRow; sheet[`A${i}`]; i++) {
-                if (!sheet[`A${i}`] || !sheet[`B${i}`]|| !sheet[`C${i}`] ) {
+                if (!sheet[`A${i}`] || !sheet[`B${i}`] || !sheet[`C${i}`]) {
                     continue;
                 }
                 // Extract data from each row
                 const crn = sheet[`A${i}`].v;
                 const course = sheet[`B${i}`].v;
                 const professor = sheet[`C${i}`].v;
-    
+
                 // Split course into prefix and number
                 const [coursePrefix, courseNumber] = course.split(' ');
-    
+
                 // Add the extracted data to the coursesData array
                 coursesData.push({
                     crn,
@@ -352,7 +304,7 @@ export default class Courses {
                     departments
                 });
             }
-    
+
             // Insert the extracted data into the database
             //const insertQuery = `INSERT INTO courses (crn, coursePrefix, courseNumber, professor, terms, departments) VALUES ?`;
             const insertQuery = `INSERT INTO courses (CRN, coursePrefix, courseNumber, professor, termsID, departmentID) VALUES ?`;
@@ -368,8 +320,8 @@ export default class Courses {
             return res.status(500).json("Failed to add courses. " + error);
         }
     }
-    
-    
+
+
 
     static deleteCourses(inputD, res) {
         try {
@@ -394,7 +346,7 @@ export default class Courses {
 
     static async updateCourses(inputData, res) {
         try {
-            console.log('Received data:', inputData); // Log received data
+            console.log('Received data:', inputData);
             const { coursesID, termsID, departmentID } = inputData;
             if (!coursesID || !termsID || !departmentID) {
                 throw new Error("Courses ID, termsID, or departmentID is missing or undefined.");
@@ -414,7 +366,7 @@ export default class Courses {
             return res.status(500).json("Failed to update Courses. " + error);
         }
     }
-    
+
 
     static getCoursesDetail(key, inputD, res) {
         try {
@@ -448,7 +400,7 @@ export default class Courses {
         }
     }
 
-    
+
     /*---------------------------COURSES------------------------------ */
     static async getCoursePrefix(key, res) {
         try {
@@ -457,12 +409,12 @@ export default class Courses {
                 FROM courses
                 ORDER BY coursePrefix ASC`, (err, data) => {
                 if (err) return res.status(500).json(err);
-    
+
                 const coursePrefixes = data.map((course, index) => ({
                     id: index + 1, // You can use index + 1 as a simple unique identifier
                     name: course.coursePrefix
                 }));
-    
+
                 const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), coursePrefixes);
                 return res.status(200).json(encryptedData);
             });
@@ -470,7 +422,7 @@ export default class Courses {
             return res.status(500).json("Failed to get course prefixes. " + error);
         }
     }
-    
+
     static async getCourseNumber(key, res) {
         try {
             db.execute(`
@@ -478,12 +430,12 @@ export default class Courses {
                 FROM courses
                 ORDER BY courseNumber ASC`, (err, data) => {
                 if (err) return res.status(500).json(err);
-    
+
                 const courseNumber = data.map((course, index) => ({
                     id: index + 1, // You can use index + 1 as a simple unique identifier
                     coursenumber: parseInt(course.courseNumber)
                 }));
-    
+
                 const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), courseNumber);
                 return res.status(200).json(encryptedData);
             });
@@ -491,5 +443,68 @@ export default class Courses {
             return res.status(500).json("Failed to get course number. " + error);
         }
     }
-    
+
+
+    //Courses Filter Controller
+    static async filterCourses(inputData, res) {
+        try {
+            const { termsID, departmentID, coursePrefix, courseNumber } = inputData;
+            console.log(termsID, departmentID, coursePrefix, courseNumber);
+            let query = `SELECT courses.*, terms.type AS term_type, department.type AS department_type
+                 FROM courses
+                 LEFT JOIN terms ON courses.termsID = terms.termsID
+                 LEFT JOIN department ON courses.departmentID = department.departmentID
+                 WHERE 1`;
+
+            const params = [];
+
+            if (termsID && termsID !== "All") {
+                query += ` AND courses.termsID = ?`;
+                params.push(termsID);
+            }
+
+            if (departmentID && departmentID !== "All") {
+                query += ` AND courses.departmentID = ?`;
+                params.push(departmentID);
+            }
+
+            if (coursePrefix && coursePrefix !== "All") {
+                query += ` AND courses.coursePrefix = ?`;
+                params.push(coursePrefix);
+            }
+
+            if (courseNumber && courseNumber !== "All") {
+                query += ` AND courses.courseNumber = ?`;
+                params.push(courseNumber);
+            }
+            console.log("param", params);
+
+            db.execute(query, params, async (error, data) => {
+
+                if (error) {
+                    console.error("Error filtering courses:", error);
+                    return res.status(500).json("Failed to filter courses. " + error.message);
+                }
+                console.log("data data", data);
+
+
+                const courses = data.map(course => ({
+                    id: course.coursesID,
+                    crn: course.CRN,
+                    prefix: course.coursePrefix,
+                    number: course.courseNumber,
+                    professor: course.professor,
+                    term: course.term_type,
+                    department: course.department_type
+                }));
+                console.log("hellllooo", courses);
+                return res.status(200).json(courses);
+            });
+
+        } catch (error) {
+            console.error("Error filtering courses:", error);
+            return res.status(500).json("Failed to filter courses. " + error.message);
+        }
+    }
+
 }

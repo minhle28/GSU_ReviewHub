@@ -67,7 +67,7 @@ const router = createBrowserRouter([
             element: <CoursesDetails />,
           },
           {
-            path: "edit-comment/:reviewId",
+            path: "edit-comment/:reviewID",
             element: <EditComment />,
         },        
         ],

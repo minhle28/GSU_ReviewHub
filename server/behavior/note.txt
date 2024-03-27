@@ -1,0 +1,44 @@
+            /*
+            let output ={
+                termTable : [],
+                departmentTable: [],
+            }
+
+            //course decsiption insecrt new course
+            // insert course
+            // course -> c_dectiption foregin key = course ACCT1010
+
+            // read excel -> formation ojject -> .map(item elem => insert ques to sql)
+
+            // C_descript
+            // ACCT 10123 descript (2 cot dau, primary key)
+
+            // course
+            // CRN ACCT 1023 professs
+
+            // unique select ACCT, number from course group by ACCT
+
+            // data.fliter( where acct = actt)
+
+            // query 1 list term
+            db.execute(`SELECT * FROM terms`, (err, data) => {
+                if (err) return res.status(500).json(err);
+
+                output.termTable =  data.map(term => ({
+                    id: term.termsID,
+                    name: term.type
+                }));                
+            });
+            // query 2 list department
+            db.execute(`SELECT * FROM department` , (err, data) => {
+                if (err) return res.status(500).json(err);
+
+                output.departmentTable = data.map(term => ({
+                    id: term.termsID,
+                    name: term.type
+                }));
+                
+            });
+            const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), output);
+                return res.status(200).json(encryptedData);
+                */

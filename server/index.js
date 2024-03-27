@@ -12,7 +12,6 @@ import Authentication from "./behavior/authentication.js";
 import Courses from "./behavior/courses.js";
 import Review from "./behavior/review.js";
 
-//import { Courses } from "../client/src/pages/courses/index.jsx";
 // Server port
 var app = express()
 const port = 3000
@@ -159,6 +158,9 @@ app.post("/dummydata", upload.single('excelFile'), async (req, res) => {
         case "getCourseNumber":
             Courses.getCourseNumber(data.entry, res);
             break;
+        case "filterCourses":
+            Courses.filterCourses(data.entry, res);
+            break;
 
         //review
         case "getComments":
@@ -169,6 +171,12 @@ app.post("/dummydata", upload.single('excelFile'), async (req, res) => {
             break;
         case "deleteComments":
             Review.deleteComments(data.entry, res);
+            break;
+        case "updateComments":
+            Review.updateComments(data.entry, res);
+            break;
+        case "getCommentsDetail":
+            Review.getCommentsDetail(key, data.entry, res);
             break;
 
         default:

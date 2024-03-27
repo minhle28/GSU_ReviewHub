@@ -115,10 +115,6 @@
     box-shadow: none
 }
 
-.student-review .name {
-    color: #007bff
-}
-
 .student-review .cursor:hover {
     color: blue
 }
@@ -194,4 +190,12 @@
 
 .student-review .no-review h4 {
     color: var(--bs-secondary-color);
+}
+
+.colorUserNameGreen {
+    color: #4CAF50;
+}
+
+.colorUserNameBlue {
+    color: #007bff;
 }

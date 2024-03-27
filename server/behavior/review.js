@@ -5,7 +5,7 @@ export default class review {
 
     static async getComments(key, inputD, res) {
         try {
-            db.execute(`SELECT review.*, user.fullName AS userFullName FROM review JOIN user ON review.userID = user.userID`, (err, data) => {
+            db.execute(`SELECT review.*, user.fullName AS userFullName FROM review JOIN user ON review.userID = user.userID ORDER BY review.reviewID DESC`, (err, data) => {
                 if (err) return res.status(500).json(err);
     
                 const review = data.map(review => ({
@@ -71,6 +71,56 @@ export default class review {
         } catch (error) {
             console.error("Error adding comment:", error);
             return res.status(500).json("Failed to add comment. " + error);
+        }
+    }
+
+    static async updateComments(inputData, res) {
+        try {
+            console.log('Received data:', inputData); // Log received data
+            const { reviewID, comment } = inputData;
+            if (!reviewID || !comment) {
+                throw new Error("Review ID or comment is missing or undefined.");
+            }
+            // Execute SQL query to update the comment
+            const updateQuery = `UPDATE review SET comment = ? WHERE reviewID = ?`;
+            db.execute(updateQuery, [comment, reviewID], (err, data) => {
+                if (err) {
+                    console.error("Error executing SQL query:", err);
+                    return res.status(500).json(err);
+                }
+                return res.status(200).json("Review updated successfully.");
+            });
+        }
+        catch (error) {
+            console.error("Error updating review:", error);
+            return res.status(500).json("Failed to update review. " + error);
+        }
+    }    
+
+
+    static getCommentsDetail(key, inputD, res) {
+        try {
+            const reviewID = inputD.reviewID;
+            if (!reviewID) {
+                return res.status(400).json("Review ID is missing.");
+            }
+
+            db.execute(`SELECT review.*, comment FROM review WHERE reviewID = ?`, [reviewID], (err, data) => {
+                if (err) {
+                    return res.status(500).json(err);
+                }
+
+                if (data.length === 0) {
+                    return res.status(404).json("Comment not found.");
+                }
+
+                const reviewData = data[0];
+                const encryptedData = MySecurity.encryptedData(MySecurity.getUserToken(key), reviewData);
+                return res.status(200).json(encryptedData);
+            });
+        } catch (error) {
+            console.error("Error getting review detail:", error);
+            return res.status(500).json("Failed to get review detail. " + error);
         }
     }
 }
