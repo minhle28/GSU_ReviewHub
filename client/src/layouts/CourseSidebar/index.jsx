@@ -118,7 +118,10 @@ export const CourseSidebar = () => {
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
                                     value={selectedTerm.name}
-                                    onChange={(e) => setSelectedTerm(terms.find(term => term.name === e.target.value))}
+                                    onChange={(e) => {
+                                        const selectedValue = e.target.value;
+                                        setSelectedTerm(selectedValue === "All" ? { id: "All", name: "All" } : terms.find(term => term.name === selectedValue));
+                                    }}                                    
                                 >
                                     <option value="All">All</option>
                                     {terms.map((term) => (
@@ -135,7 +138,10 @@ export const CourseSidebar = () => {
                                     className="form-select form-select-sm"
                                     aria-label=".form-select-sm example"
                                     value={selectedDepartment.name}
-                                    onChange={(e) => setSelectedDepartment(departments.find(department => department.name === e.target.value))}
+                                    onChange={(e) => {
+                                        const selectedValue = e.target.value;
+                                        setSelectedDepartment(selectedValue === "All Departments" ? { id: "All", name: "All Departments" } : departments.find(department => department.name === selectedValue));
+                                    }}                                    
                                 >
                                     <option value="All Departments">All Departments</option>
                                     {departments.map((department) => (
