@@ -8,7 +8,7 @@
 <img src="client/public/project-10.png" alt="Website Screenshot">
 
 
-## Features
+## ⭐ Features
 * Authentication
 * Add / Delete / Edit
 * Insert Excel data
@@ -23,6 +23,8 @@
 * <a href="#" title="CSS"><img src="https://github.com/get-icon/geticon/raw/master/icons/css-3.svg" alt="CSS" width="21px" height="21px"></a> CSS
 
 * <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" title="JavaScript"><img src="https://github.com/get-icon/geticon/raw/master/icons/javascript.svg" alt="JavaScript" width="21px" height="21px"></a> Javascript
+
+* <a href="https://developer.mozilla.org/en-US/docs/Web/Bootstrap" title="bootstrap"><img src="https://github.com/get-icon/geticon/raw/master/icons/bootstrap.svg" alt="bootstrap" width="21px" height="21px"></a> Bootstrap
 
 * <a href="https://developer.mozilla.org/en-US/docs/Web/NodeJS" title="nodejs"><img src="https://github.com/get-icon/geticon/raw/master/icons/nodejs-icon.svg" alt="NodeJS" width="21px" height="21px"></a> Node JS
 
